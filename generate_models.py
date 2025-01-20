@@ -4,66 +4,67 @@ import requests
 import shutil
 from pathlib import Path
 
+# Get the absolute path of the running script
+script_path = Path(__file__).resolve()
+script_directory = script_path.parent
+
 # Path to the OpenAPI spec file
 SPEC_FILE_URL = 'https://docs.developers.clio.com/openapi.json'
 SPEC_FILE_PATH = 'openapi.json'
-STATIC_DIR = 'static'
+STATIC_DIR = os.path.join(script_directory, 'static')
 MODELS_DIR = 'models'
 
 def init_models():
     def find_and_backup_models_folder():
-        """Check if 'models' exists in the parent directory first, then in the project root, and handle backup."""
-        current_dir = Path(os.getcwd())
-        parent_dir = current_dir.parent
+        """Check if 'models' exists in the current directory and handle backup."""
+        models_path = Path(MODELS_DIR).resolve()
 
-        # Check the parent directory first as the preferred location
-        for directory in [parent_dir, current_dir]:
-            models_path = directory / MODELS_DIR
+        if models_path.exists():
+            if any(models_path.iterdir()):  # If the directory is not empty
+                print(f'Existing non-empty models directory found at: {models_path}')
+                backup_folder = models_path.with_name(f"{MODELS_DIR}.backup")
+                counter = 1
 
-            if models_path.exists():
-                if any(models_path.iterdir()):  # If the directory is not empty
-                    print(f'Existing non-empty models directory found at: {models_path}')
-                    backup_folder = models_path.with_name(f"{MODELS_DIR}.backup")
-                    counter = 1
+                # Find a unique backup folder name
+                while backup_folder.exists():
+                    backup_folder = models_path.with_name(f"{MODELS_DIR}.backup{counter}")
+                    counter += 1
+                
+                os.rename(models_path, backup_folder)
+                print(f'Renamed "{models_path}" to "{backup_folder}"')
 
-                    # Find a unique backup folder name
-                    while backup_folder.exists():
-                        backup_folder = models_path.with_name(f"{MODELS_DIR}.backup{counter}")
-                        counter += 1
-                    
-                    os.rename(models_path, backup_folder)
-                    print(f'Renamed "{models_path}" to "{backup_folder}"')
+                # Create a new models directory
+                models_path.mkdir(parents=True, exist_ok=True)
+                print(f'Created new "{models_path}" directory.')
 
-                    # Create a new models directory in the same location
-                    models_path.mkdir(parents=True, exist_ok=True)
-                    print(f'Created new "{models_path}" directory.')
+                return models_path  # Return the models directory
+            else:
+                print(f'Models folder found at "{models_path}" but it is empty.')
+                return models_path  # Return the empty models directory
 
-                    return models_path  # Return the parent models directory
-                else:
-                    print(f'Models folder found at "{models_path}" but it is empty.')
-                    return models_path  # Return the empty parent models directory
-
-        print(f'No existing "{MODELS_DIR}" directory found in parent or current directory.')
+        print(f'No existing "{MODELS_DIR}" directory found, creating a new one.')
         return None
 
     def backup_and_create_models_folder():
-        """Handles model folder backup and creation in the parent directory as default, else locally."""
+        """Handles model folder backup and creation."""
         models_path = find_and_backup_models_folder() or Path(MODELS_DIR).resolve()
 
         if not models_path.exists():
             models_path.mkdir(parents=True, exist_ok=True)
             print(f'Created new "{models_path}" directory.')
 
-        # Copy all files from 'static/' to the determined models folder
-        if Path(STATIC_DIR).exists():
-            for item in Path(STATIC_DIR).iterdir():
+        # Copy all files from the static directory to the models folder
+        static_path = Path(STATIC_DIR)
+        if static_path.exists():
+            for item in static_path.iterdir():
                 if item.is_file():
                     shutil.copy2(item, models_path / item.name)
             print(f'Copied all files from "{STATIC_DIR}" to "{models_path}".')
         else:
             print(f'Static directory "{STATIC_DIR}" not found, no files copied.')
 
-        # Set the models directory in environment variables for the generator scripts
+        # Set the models directory and spec file path in environment variables
+        os.environ["SPEC_FILE_PATH"] = str(Path(SPEC_FILE_PATH).resolve())  # Add this line
         os.environ["ENDPOINTS_PATH"] = str(models_path / "endpoints.py")
         os.environ["FIELDS_PATH"] = str(models_path / "fields.py")
         os.environ["QUERY_PATH"] = str(models_path / "query.py")
@@ -71,24 +72,25 @@ def init_models():
         os.environ["SCHEMA_PATH"] = str(models_path / "schemas.py")
 
         print(f'Set environment variables for model paths: {models_path}')
+        print(f'Set environment variable SPEC_FILE_PATH: {os.environ["SPEC_FILE_PATH"]}')
+
 
     def download_api_specs():
         """Downloads OpenAPI specifications if the file does not already exist."""
         if not Path(SPEC_FILE_PATH).exists():
             try:
+                import requests
                 response = requests.get(SPEC_FILE_URL)
                 if response.status_code == 200:
                     with open(SPEC_FILE_PATH, 'wb') as file:
                         file.write(response.content)
                     print('File downloaded successfully')
-                    os.environ["SPEC_FILE_PATH"] = str(SPEC_FILE_PATH)
                 else:
                     print('Failed to download file')
             except requests.RequestException as e:
                 print(f'Error downloading file: {e}')
         else:
             print("API specs found")
-            os.environ["SPEC_FILE_PATH"] = str(SPEC_FILE_PATH)
             
     backup_and_create_models_folder()
     download_api_specs()
