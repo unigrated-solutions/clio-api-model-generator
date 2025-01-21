@@ -180,7 +180,7 @@ def generate_field_dataclass_code(name: str, schema: dict, all_schemas: dict, ge
                     if "_base" not in nested_class_name:
                         nested_class_name += "_base"
  
-                    dataclass_code += f"    {field_name}: Optional[{nested_class_name}] = None\n"
+                    dataclass_code += f"    {field_name}: Optional[{nested_class_name}] = {nested_class_name}\n"
                     
     dataclass_code += "\n"
     return dataclass_code
