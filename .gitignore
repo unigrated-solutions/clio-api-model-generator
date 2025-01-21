@@ -175,6 +175,6 @@ cython_debug/
 
 *.code-workspace
 .ignore/
-models/*
+models*/
 validate_field_string.py
 all_fields_test.py
