@@ -69,7 +69,7 @@ def init_models():
         os.environ["FIELDS_PATH"] = str(models_path / "fields.py")
         os.environ["QUERY_PATH"] = str(models_path / "query.py")
         os.environ["REQUEST_BODY_PATH"] = str(models_path / "request_body.py")
-        os.environ["SCHEMA_PATH"] = str(models_path / "schemas.py")
+        os.environ["COMPONENT_PATH"] = str(models_path / "components.py")
 
         print(f'Set environment variables for model paths: {models_path}')
         print(f'Set environment variable SPEC_FILE_PATH: {os.environ["SPEC_FILE_PATH"]}')
@@ -79,7 +79,6 @@ def init_models():
         """Downloads OpenAPI specifications if the file does not already exist."""
         if not Path(SPEC_FILE_PATH).exists():
             try:
-                import requests
                 response = requests.get(SPEC_FILE_URL)
                 if response.status_code == 200:
                     with open(SPEC_FILE_PATH, 'wb') as file:
@@ -97,7 +96,7 @@ def init_models():
     
 init_models()
 
-from generators.schema import generate_schema_dataclasses
+from generators.components import generate_component_dataclasses
 from generators.fields import generate_field_dataclasses
 from generators.query import generate_query_dataclass
 from generators.request_body import generate_request_body_dataclass
@@ -110,7 +109,7 @@ def generate_models():
     paths = json_spec.get("paths", {})
     endpoint_definitions = []
 
-    generate_schema_dataclasses()
+    generate_component_dataclasses()
     field_mapping = generate_field_dataclasses()
     # print(field_mapping)
     for path, methods in paths.items():

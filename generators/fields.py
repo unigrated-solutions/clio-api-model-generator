@@ -8,7 +8,7 @@ SPEC_FILE_PATH =Path(os.getenv("SPEC_FILE_PATH"))
 
 HEADER = """from dataclasses import dataclass
 from typing import Optional
-from models.schemas import *
+from models.components import *
 
 """
 pending_dataclasses = {}
