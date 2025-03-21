@@ -1594,6 +1594,7 @@ class Trustrequest_create_RequestBody_Data:
     issue_date: datetime.date
     trust_amount: float
     trust_type: Literal['client', 'matter']
+    currency_id: Optional[int] = None
     matter: Optional[List[dict]] = None
     note: Optional[str] = None
 

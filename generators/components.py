@@ -6,7 +6,7 @@ COMPONENT_PATH = Path(os.getenv("COMPONENT_PATH", "models/schemas.py"))
 SPEC_FILE_PATH =Path(os.getenv("SPEC_FILE_PATH"))
 
 HEADER = """from dataclasses import dataclass
-from typing import Optional, List, Literal
+from typing import Optional, List, Literal, Any
 import datetime
 
 """
@@ -102,23 +102,29 @@ def generate_component_dataclass_code(component_name: str, component: dict) -> N
     formatted_class_name = component_name
     process_component(formatted_class_name, component, set())
 
-def generate_component_dataclasses():
-    input_file = SPEC_FILE_PATH  # Replace with your OpenAPI spec file path
+def generate_component_dataclasses(api_specs):
+    """Generates dataclasses from OpenAPI component schemas."""
 
-    with open(input_file, "r") as f:
-        spec = json.load(f)
+    components = api_specs.get("components", {}).get("schemas", {})
 
-    if "components" not in spec or "schemas" not in spec["components"]:
+    if not components:
         print("No schemas found in the OpenAPI spec.")
         return
 
-    components = spec["components"]["schemas"]
+    # Prioritize components containing "_base", otherwise fallback to components without "_"
+    filtered_components = [
+        name for name in components if "_base" in name
+    ] or [
+        name for name in components if "_" not in name
+    ]
 
-    for component_name, component in components.items():
-        if "_base" in component_name:  # Filter components containing '_base'
-            generate_component_dataclass_code(component_name, component)
+    count = len(filtered_components)
 
-    print(f"Dataclasses generated in {COMPONENT_PATH}")
+    for component_name in filtered_components:
+        generate_component_dataclass_code(component_name, components[component_name])
+
+    print(f"Dataclasses generated in {COMPONENT_PATH}, Count: {count}")
+
     
 if __name__ == "__main__":
     generate_component_dataclasses()

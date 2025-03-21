@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, List, Literal
+from typing import Optional, List, Literal, Any
 import datetime
 
 @dataclass
@@ -240,6 +240,7 @@ class BankAccount_base:
     controlled_account: Optional[bool] = None
     created_at: Optional[datetime.datetime] = None
     currency: Optional[str] = None
+    currency_symbol: Optional[str] = None
     currency_id: Optional[float] = None
     default_account: Optional[bool] = None
     domicile_branch: Optional[str] = None
@@ -267,6 +268,7 @@ class BankTransaction_base:
     date: Optional[datetime.date] = None
     amount: Optional[float] = None
     currency: Optional[str] = None
+    currency_id: Optional[int] = None
     description: Optional[str] = None
     exchange_rate: Optional[float] = None
     transaction_type: Optional[str] = None
@@ -942,6 +944,10 @@ class Note_base:
     time_entries_count: Optional[int] = None
 
 @dataclass
+class OutstandingClientBalance_base_Total_outstanding_balance_by_currency:
+    pass
+
+@dataclass
 class OutstandingClientBalance_base:
     associated_matter_ids: Optional[List[int]] = None
     etag: Optional[str] = None
@@ -952,6 +958,7 @@ class OutstandingClientBalance_base:
     pending_payments_total: Optional[float] = None
     reminders_enabled: Optional[bool] = None
     total_outstanding_balance: Optional[float] = None
+    total_outstanding_balance_by_currency: Optional[OutstandingClientBalance_base_Total_outstanding_balance_by_currency] = None
     created_at: Optional[datetime.datetime] = None
     updated_at: Optional[datetime.datetime] = None
 

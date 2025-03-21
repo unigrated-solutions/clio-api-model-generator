@@ -3,14 +3,20 @@ import json
 import requests
 import shutil
 from pathlib import Path
+import yaml
 
 # Get the absolute path of the running script
 script_path = Path(__file__).resolve()
 script_directory = script_path.parent
 
-# Path to the OpenAPI spec file
+# Path to the Clio Manage API spec file
 SPEC_FILE_URL = 'https://docs.developers.clio.com/openapi.json'
 SPEC_FILE_PATH = 'openapi.json'
+
+# Path to the Clio Grow API spec file- Early Release
+# SPEC_FILE_URL = 'https://docs.developers.clio.com/grow.openapi.yaml'
+# SPEC_FILE_PATH = 'grow.openapi.yaml'
+
 STATIC_DIR = os.path.join(script_directory, 'static')
 MODELS_DIR = 'models'
 
@@ -102,15 +108,30 @@ from generators.query import generate_query_dataclass
 from generators.request_body import generate_request_body_dataclass
 from generators.endpoints import generate_endpoint_registry  
 
-def generate_models():
-    with open(SPEC_FILE_PATH, "r") as f:
-        json_spec = json.load(f)
+def load_openapi_spec(file_path):
+    """Loads an OpenAPI spec file (JSON or YAML) and returns it as a Python dictionary."""
+    file_path = Path(file_path)  # Ensure it's a Path object
 
-    paths = json_spec.get("paths", {})
+    if not file_path.exists():
+        raise FileNotFoundError(f"File not found: {file_path}")
+
+    with open(file_path, "r", encoding="utf-8") as file:
+        # Determine if it's JSON or YAML based on the file extension
+        if file_path.suffix in (".json",):
+            return json.load(file)
+        elif file_path.suffix in (".yaml", ".yml"):
+            return yaml.safe_load(file)
+        else:
+            raise ValueError(f"Unsupported file format: {file_path.suffix}")
+
+def generate_models():
+    openapi_spec = load_openapi_spec(SPEC_FILE_PATH)
+
+    paths = openapi_spec.get("paths", {})
     endpoint_definitions = []
 
-    generate_component_dataclasses()
-    field_mapping = generate_field_dataclasses()
+    generate_component_dataclasses(openapi_spec)
+    field_mapping = generate_field_dataclasses(openapi_spec)
     # print(field_mapping)
     for path, methods in paths.items():
         for method, details in methods.items():

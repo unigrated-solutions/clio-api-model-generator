@@ -21,6 +21,7 @@ class Endpoints:
                 "method": metadata["method"],
                 "query_model": metadata.get("query_model"),
                 "request_body_model": metadata.get("request_body_model"),
+                'field_model': metadata.get("field_model")
             }
 
     @classmethod

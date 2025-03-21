@@ -207,19 +207,19 @@ def map_field_type(field_schema: dict) -> str:
         return "dict"
     return "Any"
 
-def generate_field_dataclasses(export_mapping = False):
+def generate_field_dataclasses(api_specs, export_mapping = False):
     global pending_dataclasses
-    input_file = SPEC_FILE_PATH  # Replace with your OpenAPI spec file path
+    # input_file = SPEC_FILE_PATH  # Replace with your OpenAPI spec file path
     FIELDS_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(input_file, "r") as f:
-        spec = json.load(f)
+    # with open(input_file, "r") as f:
+    #     spec = json.load(f)
 
-    if "components" not in spec or "schemas" not in spec["components"]:
+    if "components" not in api_specs or "schemas" not in api_specs["components"]:
         print("No schemas found in the OpenAPI spec.")
         return
 
-    all_schemas = spec["components"]["schemas"]
+    all_schemas = api_specs["components"]["schemas"]
     generated_classes = set()
 
 

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional
-from models.schemas import *
+from models.components import *
 
 @dataclass
 class ErrorDetail_Fields:
@@ -24,8 +24,8 @@ class Comment_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    creator: Optional[User_base] = None
-    document_version: Optional[DocumentVersion_base] = None
+    creator: Optional[User_base] = User_base
+    document_version: Optional[DocumentVersion_base] = DocumentVersion_base
 
 @dataclass
 class DocumentArchive_Fields:
@@ -51,9 +51,9 @@ class DocumentAutomation_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    matter: Optional[Matter_base] = None
-    document_template: Optional[DocumentTemplate_base] = None
-    documents: Optional[Document_base] = None
+    matter: Optional[Matter_base] = Matter_base
+    document_template: Optional[DocumentTemplate_base] = DocumentTemplate_base
+    documents: Optional[Document_base] = Document_base
 
 @dataclass
 class DocumentCategory_Fields:
@@ -63,6 +63,33 @@ class DocumentCategory_Fields:
     name: Optional[str] = None
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
+
+@dataclass
+class Document_Fields:
+    # Fields directly copied from Document_base
+    id: Optional[int] = None
+    etag: Optional[str] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    deleted_at: Optional[str] = None
+    type: Optional[str] = None
+    locked: Optional[bool] = None
+    name: Optional[str] = None
+    received_at: Optional[str] = None
+    filename: Optional[str] = None
+    size: Optional[int] = None
+    content_type: Optional[str] = None
+
+    # Nested resource fields
+    parent: Optional[LinkedFolder_base] = LinkedFolder_base
+    matter: Optional[Matter_base] = Matter_base
+    contact: Optional[Contact_base] = Contact_base
+    document_category: Optional[DocumentCategory_base] = DocumentCategory_base
+    creator: Optional[ClioCreator_base] = ClioCreator_base
+    latest_document_version: Optional[DocumentVersion_base] = DocumentVersion_base
+    group: Optional[Group_base] = Group_base
+    external_properties: Optional[ExternalProperty_base] = ExternalProperty_base
+    document_versions: Optional[DocumentVersion_base] = DocumentVersion_base
 
 @dataclass
 class DocumentTemplate_Fields:
@@ -76,8 +103,30 @@ class DocumentTemplate_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    document_category: Optional[DocumentCategory_base] = None
-    last_modified_by: Optional[User_base] = None
+    document_category: Optional[DocumentCategory_base] = DocumentCategory_base
+    last_modified_by: Optional[User_base] = User_base
+
+@dataclass
+class DocumentVersion_Fields:
+    # Fields directly copied from DocumentVersion_base
+    id: Optional[int] = None
+    document_id: Optional[int] = None
+    etag: Optional[str] = None
+    uuid: Optional[str] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    filename: Optional[str] = None
+    size: Optional[int] = None
+    version_number: Optional[int] = None
+    content_type: Optional[str] = None
+    received_at: Optional[str] = None
+    put_url: Optional[str] = None
+    fully_uploaded: Optional[bool] = None
+
+    # Nested resource fields
+    creator: Optional[ClioCreator_base] = ClioCreator_base
+    put_headers: Optional[MultipartHeader_base] = MultipartHeader_base
+    multiparts: Optional[Multipart_base] = Multipart_base
 
 @dataclass
 class Folder_Fields:
@@ -93,14 +142,14 @@ class Folder_Fields:
     root: Optional[bool] = None
 
     # Nested resource fields
-    parent: Optional[LinkedFolder_base] = None
-    matter: Optional[Matter_base] = None
-    contact: Optional[Contact_base] = None
-    document_category: Optional[DocumentCategory_base] = None
-    creator: Optional[ClioCreator_base] = None
-    latest_document_version: Optional[DocumentVersion_base] = None
-    group: Optional[Group_base] = None
-    external_properties: Optional[ExternalProperty_base] = None
+    parent: Optional[LinkedFolder_base] = LinkedFolder_base
+    matter: Optional[Matter_base] = Matter_base
+    contact: Optional[Contact_base] = Contact_base
+    document_category: Optional[DocumentCategory_base] = DocumentCategory_base
+    creator: Optional[ClioCreator_base] = ClioCreator_base
+    latest_document_version: Optional[DocumentVersion_base] = DocumentVersion_base
+    group: Optional[Group_base] = Group_base
+    external_properties: Optional[ExternalProperty_base] = ExternalProperty_base
 
 @dataclass
 class Item_Fields:
@@ -115,14 +164,14 @@ class Item_Fields:
     name: Optional[str] = None
 
     # Nested resource fields
-    parent: Optional[LinkedFolder_base] = None
-    matter: Optional[Matter_base] = None
-    contact: Optional[Contact_base] = None
-    document_category: Optional[DocumentCategory_base] = None
-    creator: Optional[ClioCreator_base] = None
-    latest_document_version: Optional[DocumentVersion_base] = None
-    group: Optional[Group_base] = None
-    external_properties: Optional[ExternalProperty_base] = None
+    parent: Optional[LinkedFolder_base] = LinkedFolder_base
+    matter: Optional[Matter_base] = Matter_base
+    contact: Optional[Contact_base] = Contact_base
+    document_category: Optional[DocumentCategory_base] = DocumentCategory_base
+    creator: Optional[ClioCreator_base] = ClioCreator_base
+    latest_document_version: Optional[DocumentVersion_base] = DocumentVersion_base
+    group: Optional[Group_base] = Group_base
+    external_properties: Optional[ExternalProperty_base] = ExternalProperty_base
 
 @dataclass
 class Account_Fields:
@@ -135,7 +184,7 @@ class Account_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    owner: Optional[User_base] = None
+    owner: Optional[User_base] = User_base
 
 @dataclass
 class ActivityDescription_Fields:
@@ -157,10 +206,10 @@ class ActivityDescription_Fields:
     currency: Optional[dict] = None
 
     # Nested resource fields
-    groups: Optional[Group_base] = None
-    rate: Optional[ActivityDescriptionRate_base] = None
-    utbms_task: Optional[UtbmsCode_base] = None
-    utbms_activity: Optional[UtbmsCode_base] = None
+    groups: Optional[Group_base] = Group_base
+    rate: Optional[ActivityDescriptionRate_base] = ActivityDescriptionRate_base
+    utbms_task: Optional[UtbmsCode_base] = UtbmsCode_base
+    utbms_activity: Optional[UtbmsCode_base] = UtbmsCode_base
 
 @dataclass
 class ActivityRate_Fields:
@@ -175,8 +224,8 @@ class ActivityRate_Fields:
     co_counsel_contact_id: Optional[int] = None
 
     # Nested resource fields
-    user: Optional[User_base] = None
-    group: Optional[Group_base] = None
+    user: Optional[User_base] = User_base
+    group: Optional[Group_base] = Group_base
 
 @dataclass
 class Activity_Fields:
@@ -207,25 +256,25 @@ class Activity_Fields:
     currency: Optional[dict] = None
 
     # Nested resource fields
-    activity_description: Optional[ActivityDescription_base] = None
-    expense_category: Optional[ExpenseCategory_base] = None
-    bill: Optional[Bill_base] = None
-    communication: Optional[Communication_base] = None
-    client_portal: Optional[ClientPortal_base] = None
-    matter: Optional[Matter_base] = None
-    matter_note: Optional[Note_base] = None
-    contact_note: Optional[Note_base] = None
-    subject: Optional[PolymorphicObject_base] = None
-    timer: Optional[Timer_base] = None
-    user: Optional[User_base] = None
-    utbms_expense: Optional[UtbmsCode_base] = None
-    vendor: Optional[Contact_base] = None
-    calendar_entry: Optional[Activity_CalendarEntry_base] = None
-    task: Optional[Activity_Task_base] = None
-    text_message_conversation: Optional[Activity_TextMessageConversation_base] = None
-    document_version: Optional[DocumentVersion_base] = None
-    legal_aid_uk_activity: Optional[LegalAidUkActivity_base] = None
-    currency: Optional[Currency_base] = None
+    activity_description: Optional[ActivityDescription_base] = ActivityDescription_base
+    expense_category: Optional[ExpenseCategory_base] = ExpenseCategory_base
+    bill: Optional[Bill_base] = Bill_base
+    communication: Optional[Communication_base] = Communication_base
+    client_portal: Optional[ClientPortal_base] = ClientPortal_base
+    matter: Optional[Matter_base] = Matter_base
+    matter_note: Optional[Note_base] = Note_base
+    contact_note: Optional[Note_base] = Note_base
+    subject: Optional[PolymorphicObject_base] = PolymorphicObject_base
+    timer: Optional[Timer_base] = Timer_base
+    user: Optional[User_base] = User_base
+    utbms_expense: Optional[UtbmsCode_base] = UtbmsCode_base
+    vendor: Optional[Contact_base] = Contact_base
+    calendar_entry: Optional[Activity_CalendarEntry_base] = Activity_CalendarEntry_base
+    task: Optional[Activity_Task_base] = Activity_Task_base
+    text_message_conversation: Optional[Activity_TextMessageConversation_base] = Activity_TextMessageConversation_base
+    document_version: Optional[DocumentVersion_base] = DocumentVersion_base
+    legal_aid_uk_activity: Optional[LegalAidUkActivity_base] = LegalAidUkActivity_base
+    currency: Optional[Currency_base] = Currency_base
 
 @dataclass
 class Address_Fields:
@@ -259,12 +308,12 @@ class Allocation_Fields:
     payment_type: Optional[str] = None
 
     # Nested resource fields
-    bill: Optional[Bill_base] = None
-    source_bank_account: Optional[BankAccount_base] = None
-    destination_bank_account: Optional[BankAccount_base] = None
-    matter: Optional[Matter_base] = None
-    contact: Optional[Contact_base] = None
-    parent: Optional[PolymorphicObject_base] = None
+    bill: Optional[Bill_base] = Bill_base
+    source_bank_account: Optional[BankAccount_base] = BankAccount_base
+    destination_bank_account: Optional[BankAccount_base] = BankAccount_base
+    matter: Optional[Matter_base] = Matter_base
+    contact: Optional[Contact_base] = Contact_base
+    parent: Optional[PolymorphicObject_base] = PolymorphicObject_base
 
 @dataclass
 class Balance_Fields:
@@ -287,6 +336,7 @@ class BankAccount_Fields:
     controlled_account: Optional[bool] = None
     created_at: Optional[str] = None
     currency: Optional[str] = None
+    currency_symbol: Optional[str] = None
     currency_id: Optional[float] = None
     default_account: Optional[bool] = None
     domicile_branch: Optional[str] = None
@@ -302,7 +352,7 @@ class BankAccount_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    user: Optional[User_base] = None
+    user: Optional[User_base] = User_base
 
 @dataclass
 class BankTransaction_Fields:
@@ -318,6 +368,7 @@ class BankTransaction_Fields:
     date: Optional[str] = None
     amount: Optional[float] = None
     currency: Optional[str] = None
+    currency_id: Optional[int] = None
     description: Optional[str] = None
     exchange_rate: Optional[float] = None
     transaction_type: Optional[str] = None
@@ -328,11 +379,11 @@ class BankTransaction_Fields:
     read_only_confirmation: Optional[bool] = None
 
     # Nested resource fields
-    client: Optional[Contact_base] = None
-    matter: Optional[Matter_base] = None
-    bank_account: Optional[BankAccount_base] = None
-    bill: Optional[Bill_base] = None
-    allocation: Optional[Allocation_base] = None
+    client: Optional[Contact_base] = Contact_base
+    matter: Optional[Matter_base] = Matter_base
+    bank_account: Optional[BankAccount_base] = BankAccount_base
+    bill: Optional[Bill_base] = Bill_base
+    allocation: Optional[Allocation_base] = Allocation_base
 
 @dataclass
 class BankTransfer_Fields:
@@ -348,10 +399,10 @@ class BankTransfer_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    client: Optional[Contact_base] = None
-    destination_account: Optional[BankAccount_base] = None
-    matter: Optional[Matter_base] = None
-    source_account: Optional[BankAccount_base] = None
+    client: Optional[Contact_base] = Contact_base
+    destination_account: Optional[BankAccount_base] = BankAccount_base
+    matter: Optional[Matter_base] = Matter_base
+    source_account: Optional[BankAccount_base] = BankAccount_base
 
 @dataclass
 class Bill_Fields:
@@ -398,21 +449,21 @@ class Bill_Fields:
     available_state_transitions: Optional[List[str]] = None
 
     # Nested resource fields
-    user: Optional[User_base] = None
-    client: Optional[Contact_base] = None
-    discount: Optional[Discount_base] = None
-    interest: Optional[Interest_base] = None
-    matters: Optional[Matter_base] = None
-    group: Optional[Group_base] = None
-    bill_theme: Optional[BillTheme_base] = None
-    original_bill: Optional[Bill_base] = None
-    destination_account: Optional[BankAccount_base] = None
-    balances: Optional[Balance_base] = None
-    matter_totals: Optional[MatterBalance_base] = None
-    currency: Optional[Currency_base] = None
-    billing_setting: Optional[BillingSetting_base] = None
-    client_addresses: Optional[Address_base] = None
-    legal_aid_uk_bill: Optional[LegalAidUkBill_base] = None
+    user: Optional[User_base] = User_base
+    client: Optional[Contact_base] = Contact_base
+    discount: Optional[Discount_base] = Discount_base
+    interest: Optional[Interest_base] = Interest_base
+    matters: Optional[Matter_base] = Matter_base
+    group: Optional[Group_base] = Group_base
+    bill_theme: Optional[BillTheme_base] = BillTheme_base
+    original_bill: Optional[Bill_base] = Bill_base
+    destination_account: Optional[BankAccount_base] = BankAccount_base
+    balances: Optional[Balance_base] = Balance_base
+    matter_totals: Optional[MatterBalance_base] = MatterBalance_base
+    currency: Optional[Currency_base] = Currency_base
+    billing_setting: Optional[BillingSetting_base] = BillingSetting_base
+    client_addresses: Optional[Address_base] = Address_base
+    legal_aid_uk_bill: Optional[LegalAidUkBill_base] = LegalAidUkBill_base
 
 @dataclass
 class BillTheme_Fields:
@@ -437,7 +488,7 @@ class BillableClient_Fields:
     billable_matters_count: Optional[int] = None
 
     # Nested resource fields
-    billable_matters: Optional[BillableMatter_base] = None
+    billable_matters: Optional[BillableMatter_base] = BillableMatter_base
 
 @dataclass
 class BillableMatter_Fields:
@@ -451,7 +502,7 @@ class BillableMatter_Fields:
     display_number: Optional[str] = None
 
     # Nested resource fields
-    client: Optional[Contact_base] = None
+    client: Optional[Contact_base] = Contact_base
 
 @dataclass
 class CalendarEntryEventType_Fields:
@@ -485,17 +536,17 @@ class CalendarEntry_Fields:
     time_entries_count: Optional[int] = None
 
     # Nested resource fields
-    time_entries: Optional[Activity_base] = None
-    conference_meeting: Optional[ConferenceMeeting_base] = None
-    matter: Optional[Matter_base] = None
-    matter_docket: Optional[MatterDocket_base] = None
-    calendar_owner: Optional[Calendar_base] = None
-    parent_calendar_entry: Optional[CalendarEntry_base] = None
-    calendar_entry_event_type: Optional[CalendarEntryEventType_base] = None
-    attendees: Optional[Attendee_base] = None
-    calendars: Optional[Calendar_base] = None
-    reminders: Optional[Reminder_base] = None
-    external_properties: Optional[ExternalProperty_base] = None
+    time_entries: Optional[Activity_base] = Activity_base
+    conference_meeting: Optional[ConferenceMeeting_base] = ConferenceMeeting_base
+    matter: Optional[Matter_base] = Matter_base
+    matter_docket: Optional[MatterDocket_base] = MatterDocket_base
+    calendar_owner: Optional[Calendar_base] = Calendar_base
+    parent_calendar_entry: Optional[CalendarEntry_base] = CalendarEntry_base
+    calendar_entry_event_type: Optional[CalendarEntryEventType_base] = CalendarEntryEventType_base
+    attendees: Optional[Attendee_base] = Attendee_base
+    calendars: Optional[Calendar_base] = Calendar_base
+    reminders: Optional[Reminder_base] = Reminder_base
+    external_properties: Optional[ExternalProperty_base] = ExternalProperty_base
 
 @dataclass
 class Calendar_Fields:
@@ -514,7 +565,7 @@ class Calendar_Fields:
     source: Optional[str] = None
 
     # Nested resource fields
-    creator: Optional[User_base] = None
+    creator: Optional[User_base] = User_base
 
 @dataclass
 class ClioPaymentsLink_Fields:
@@ -533,12 +584,12 @@ class ClioPaymentsLink_Fields:
     url: Optional[str] = None
 
     # Nested resource fields
-    bank_account: Optional[BankAccount_base] = None
-    bill: Optional[Bill_base] = None
-    clio_payments_payment: Optional[ClioPaymentsPayment_base] = None
-    contact: Optional[Contact_base] = None
-    destination_account: Optional[BankAccount_base] = None
-    destination_contact: Optional[Contact_base] = None
+    bank_account: Optional[BankAccount_base] = BankAccount_base
+    bill: Optional[Bill_base] = Bill_base
+    clio_payments_payment: Optional[ClioPaymentsPayment_base] = ClioPaymentsPayment_base
+    contact: Optional[Contact_base] = Contact_base
+    destination_account: Optional[BankAccount_base] = BankAccount_base
+    destination_contact: Optional[Contact_base] = Contact_base
 
 @dataclass
 class ClioPaymentsPayment_Fields:
@@ -555,14 +606,94 @@ class ClioPaymentsPayment_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    bank_transaction: Optional[BankTransaction_base] = None
-    clio_payments_link: Optional[ClioPaymentsLink_base] = None
-    contact: Optional[Contact_base] = None
-    destination_account: Optional[BankAccount_base] = None
-    user: Optional[User_base] = None
-    allocations: Optional[Allocation_base] = None
-    bills: Optional[Bill_base] = None
-    matters: Optional[Matter_base] = None
+    bank_transaction: Optional[BankTransaction_base] = BankTransaction_base
+    clio_payments_link: Optional[ClioPaymentsLink_base] = ClioPaymentsLink_base
+    contact: Optional[Contact_base] = Contact_base
+    destination_account: Optional[BankAccount_base] = BankAccount_base
+    user: Optional[User_base] = User_base
+    allocations: Optional[Allocation_base] = Allocation_base
+    bills: Optional[Bill_base] = Bill_base
+    matters: Optional[Matter_base] = Matter_base
+
+@dataclass
+class Communication_Fields:
+    # Fields directly copied from Communication_base
+    id: Optional[int] = None
+    etag: Optional[str] = None
+    subject: Optional[str] = None
+    body: Optional[str] = None
+    type: Optional[str] = None
+    date: Optional[str] = None
+    time_entries_count: Optional[int] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    received_at: Optional[str] = None
+
+    # Nested resource fields
+    user: Optional[User_base] = User_base
+    matter: Optional[Matter_base] = Matter_base
+    communication_eml_file: Optional[CommunicationEmlFile_base] = CommunicationEmlFile_base
+    senders: Optional[Participant_base] = Participant_base
+    receivers: Optional[Participant_base] = Participant_base
+    external_properties: Optional[ExternalProperty_base] = ExternalProperty_base
+    time_entries: Optional[Activity_base] = Activity_base
+    documents: Optional[Document_base] = Document_base
+    notification_event_subscribers: Optional[NotificationEventSubscriber_base] = NotificationEventSubscriber_base
+
+@dataclass
+class Contact_Fields:
+    # Fields directly copied from Contact_base
+    id: Optional[int] = None
+    etag: Optional[str] = None
+    name: Optional[str] = None
+    first_name: Optional[str] = None
+    middle_name: Optional[str] = None
+    last_name: Optional[str] = None
+    date_of_birth: Optional[str] = None
+    type: Optional[str] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    prefix: Optional[str] = None
+    title: Optional[str] = None
+    initials: Optional[str] = None
+    clio_connect_email: Optional[str] = None
+    locked_clio_connect_email: Optional[bool] = None
+    client_connect_user_id: Optional[int] = None
+    primary_email_address: Optional[str] = None
+    secondary_email_address: Optional[str] = None
+    primary_phone_number: Optional[str] = None
+    secondary_phone_number: Optional[str] = None
+    ledes_client_id: Optional[str] = None
+    has_clio_for_clients_permission: Optional[bool] = None
+    is_client: Optional[bool] = None
+    is_clio_for_client_user: Optional[bool] = None
+    is_co_counsel: Optional[bool] = None
+    is_bill_recipient: Optional[bool] = None
+    sales_tax_number: Optional[str] = None
+    currency: Optional[dict] = None
+
+    # Nested resource fields
+    activity_rates: Optional[ActivityRate_base] = ActivityRate_base
+    addresses: Optional[Address_base] = Address_base
+    custom_field_values: Optional[CustomFieldValue_base] = CustomFieldValue_base
+    custom_field_set_associations: Optional[CustomFieldSetAssociation_base] = CustomFieldSetAssociation_base
+    email_addresses: Optional[EmailAddress_base] = EmailAddress_base
+    instant_messengers: Optional[InstantMessenger_base] = InstantMessenger_base
+    phone_numbers: Optional[PhoneNumber_base] = PhoneNumber_base
+    web_sites: Optional[WebSite_base] = WebSite_base
+    notification_methods: Optional[NotificationMethod_base] = NotificationMethod_base
+    account_balances: Optional[AccountBalance_base] = AccountBalance_base
+    related_contacts: Optional[Contact_base] = Contact_base
+    primary_work_address: Optional[Address_base] = Address_base
+    primary_address: Optional[Address_base] = Address_base
+    secondary_address: Optional[Address_base] = Address_base
+    company: Optional[Contact_base] = Contact_base
+    avatar: Optional[Avatar_base] = Avatar_base
+    payment_profile: Optional[PaymentProfile_base] = PaymentProfile_base
+    folder: Optional[Folder_base] = Folder_base
+    co_counsel_rate: Optional[ActivityRate_base] = ActivityRate_base
+    primary_web_site: Optional[WebSite_base] = WebSite_base
+    legal_aid_uk_contact: Optional[LegalAidUkContact_base] = LegalAidUkContact_base
 
 @dataclass
 class ConversationMessage_Fields:
@@ -575,10 +706,33 @@ class ConversationMessage_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    sender: Optional[UnredactedParticipant_base] = None
-    document: Optional[Document_base] = None
-    conversation: Optional[Conversation_base] = None
-    receivers: Optional[UnredactedParticipant_base] = None
+    sender: Optional[UnredactedParticipant_base] = UnredactedParticipant_base
+    document: Optional[Document_base] = Document_base
+    conversation: Optional[Conversation_base] = Conversation_base
+    receivers: Optional[UnredactedParticipant_base] = UnredactedParticipant_base
+
+@dataclass
+class Conversation_Fields:
+    # Fields directly copied from Conversation_base
+    id: Optional[int] = None
+    etag: Optional[str] = None
+    archived: Optional[bool] = None
+    read_only: Optional[bool] = None
+    current_user_is_member: Optional[bool] = None
+    subject: Optional[str] = None
+    message_count: Optional[int] = None
+    time_entries_count: Optional[int] = None
+    read: Optional[bool] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+
+    # Nested resource fields
+    last_message: Optional[ConversationMessage_base] = ConversationMessage_base
+    first_message: Optional[ConversationMessage_base] = ConversationMessage_base
+    matter: Optional[Matter_base] = Matter_base
+    messages: Optional[ConversationMessage_base] = ConversationMessage_base
+    documents: Optional[Document_base] = Document_base
+    memberships: Optional[ConversationMembership_base] = ConversationMembership_base
 
 @dataclass
 class Jurisdiction_Fields:
@@ -595,7 +749,7 @@ class Jurisdiction_Fields:
     is_local_timezone: Optional[bool] = None
 
     # Nested resource fields
-    service_types: Optional[ServiceType_base] = None
+    service_types: Optional[ServiceType_base] = ServiceType_base
 
 @dataclass
 class JurisdictionsToTrigger_Fields:
@@ -624,11 +778,11 @@ class MatterDocket_Fields:
     deleted_at: Optional[str] = None
 
     # Nested resource fields
-    matter: Optional[Matter_base] = None
-    jurisdiction: Optional[Jurisdiction_base] = None
-    trigger: Optional[JurisdictionsToTrigger_base] = None
-    service_type: Optional[ServiceType_base] = None
-    calendar_entries: Optional[CalendarEntry_base] = None
+    matter: Optional[Matter_base] = Matter_base
+    jurisdiction: Optional[Jurisdiction_base] = Jurisdiction_base
+    trigger: Optional[JurisdictionsToTrigger_base] = JurisdictionsToTrigger_base
+    service_type: Optional[ServiceType_base] = ServiceType_base
+    calendar_entries: Optional[CalendarEntry_base] = CalendarEntry_base
 
 @dataclass
 class ServiceType_Fields:
@@ -655,9 +809,9 @@ class CreditMemo_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    user: Optional[User_base] = None
-    contact: Optional[Contact_base] = None
-    allocations: Optional[Allocation_base] = None
+    user: Optional[User_base] = User_base
+    contact: Optional[Contact_base] = Contact_base
+    allocations: Optional[Allocation_base] = Allocation_base
 
 @dataclass
 class Currency_Fields:
@@ -696,7 +850,7 @@ class CustomField_Fields:
     display_order: Optional[int] = None
 
     # Nested resource fields
-    picklist_options: Optional[PicklistOption_base] = None
+    picklist_options: Optional[PicklistOption_base] = PicklistOption_base
 
 @dataclass
 class CustomFieldSet_Fields:
@@ -710,7 +864,7 @@ class CustomFieldSet_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    custom_fields: Optional[CustomField_base] = None
+    custom_fields: Optional[CustomField_base] = CustomField_base
 
 @dataclass
 class EmailAddress_Fields:
@@ -739,8 +893,8 @@ class ExpenseCategory_Fields:
     currency: Optional[dict] = None
 
     # Nested resource fields
-    groups: Optional[Group_base] = None
-    utbms_code: Optional[UtbmsCode_base] = None
+    groups: Optional[Group_base] = Group_base
+    utbms_code: Optional[UtbmsCode_base] = UtbmsCode_base
 
 @dataclass
 class GrantFundingSource_Fields:
@@ -752,7 +906,7 @@ class GrantFundingSource_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    grants: Optional[Grant_base] = None
+    grants: Optional[Grant_base] = Grant_base
 
 @dataclass
 class Grant_Fields:
@@ -770,7 +924,7 @@ class Grant_Fields:
     end_date: Optional[str] = None
 
     # Nested resource fields
-    grant_funding_source: Optional[GrantFundingSource_base] = None
+    grant_funding_source: Optional[GrantFundingSource_base] = GrantFundingSource_base
 
 @dataclass
 class Group_Fields:
@@ -783,7 +937,7 @@ class Group_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    users: Optional[User_base] = None
+    users: Optional[User_base] = User_base
 
 @dataclass
 class InterestCharge_Fields:
@@ -797,9 +951,9 @@ class InterestCharge_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    bill: Optional[Bill_base] = None
-    balances: Optional[Balance_base] = None
-    matters: Optional[Matter_base] = None
+    bill: Optional[Bill_base] = Bill_base
+    balances: Optional[Balance_base] = Balance_base
+    matters: Optional[Matter_base] = Matter_base
 
 @dataclass
 class Interest_Fields:
@@ -824,7 +978,7 @@ class MyEvent_Fields:
     # Fields directly copied from MyEvent_base
 
     # Nested resource fields
-    event: Optional[Event_base] = None
+    event: Optional[Event_base] = Event_base
 
 @dataclass
 class Event_Fields:
@@ -953,12 +1107,12 @@ class LineItem_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    bill: Optional[Bill_base] = None
-    activity: Optional[Activity_base] = None
-    matter: Optional[Matter_base] = None
-    user: Optional[User_base] = None
-    discount: Optional[Discount_base] = None
-    included_line_item_totals: Optional[LineItemTotals_base] = None
+    bill: Optional[Bill_base] = Bill_base
+    activity: Optional[Activity_base] = Activity_base
+    matter: Optional[Matter_base] = Matter_base
+    user: Optional[User_base] = User_base
+    discount: Optional[Discount_base] = Discount_base
+    included_line_item_totals: Optional[LineItemTotals_base] = LineItemTotals_base
 
 @dataclass
 class LogEntry_Fields:
@@ -971,8 +1125,57 @@ class LogEntry_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    item: Optional[PolymorphicObject_base] = None
-    user: Optional[User_base] = None
+    item: Optional[PolymorphicObject_base] = PolymorphicObject_base
+    user: Optional[User_base] = User_base
+
+@dataclass
+class Matter_Fields:
+    # Fields directly copied from Matter_base
+    id: Optional[int] = None
+    etag: Optional[str] = None
+    number: Optional[int] = None
+    display_number: Optional[str] = None
+    custom_number: Optional[str] = None
+    currency: Optional[dict] = None
+    description: Optional[str] = None
+    status: Optional[str] = None
+    location: Optional[str] = None
+    client_reference: Optional[str] = None
+    client_id: Optional[int] = None
+    billable: Optional[bool] = None
+    maildrop_address: Optional[str] = None
+    billing_method: Optional[str] = None
+    open_date: Optional[str] = None
+    close_date: Optional[str] = None
+    pending_date: Optional[str] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    shared: Optional[bool] = None
+    has_tasks: Optional[bool] = None
+    last_activity_date: Optional[str] = None
+    matter_stage_updated_at: Optional[str] = None
+
+    # Nested resource fields
+    client: Optional[Contact_base] = Contact_base
+    contingency_fee: Optional[ContingencyFee_base] = ContingencyFee_base
+    custom_rate: Optional[MatterCustomRate_base] = MatterCustomRate_base
+    evergreen_retainer: Optional[EvergreenRetainer_base] = EvergreenRetainer_base
+    folder: Optional[Folder_base] = Folder_base
+    group: Optional[Group_base] = Group_base
+    matter_budget: Optional[MatterBudget_base] = MatterBudget_base
+    matter_stage: Optional[MatterStage_base] = MatterStage_base
+    originating_attorney: Optional[User_base] = User_base
+    practice_area: Optional[PracticeArea_base] = PracticeArea_base
+    responsible_attorney: Optional[User_base] = User_base
+    statute_of_limitations: Optional[Task_base] = Task_base
+    user: Optional[User_base] = User_base
+    legal_aid_uk_matter: Optional[LegalAidUkMatter_base] = LegalAidUkMatter_base
+    account_balances: Optional[AccountBalance_base] = AccountBalance_base
+    custom_field_values: Optional[CustomFieldValue_base] = CustomFieldValue_base
+    custom_field_set_associations: Optional[CustomFieldSetAssociation_base] = CustomFieldSetAssociation_base
+    matter_bill_recipients: Optional[MatterBillRecipient_base] = MatterBillRecipient_base
+    relationships: Optional[Relationship_base] = Relationship_base
+    task_template_list_instances: Optional[TaskTemplateListInstace_base] = TaskTemplateListInstace_base
 
 @dataclass
 class MatterStage_Fields:
@@ -1006,12 +1209,12 @@ class Client_Fields:
     date_of_birth: Optional[str] = None
 
     # Nested resource fields
-    avatar: Optional[Avatar_base] = None
-    company: Optional[Contact_base] = None
-    addresses: Optional[Address_base] = None
-    email_addresses: Optional[EmailAddress_base] = None
-    phone_numbers: Optional[PhoneNumber_base] = None
-    web_sites: Optional[WebSite_base] = None
+    avatar: Optional[Avatar_base] = Avatar_base
+    company: Optional[Contact_base] = Contact_base
+    addresses: Optional[Address_base] = Address_base
+    email_addresses: Optional[EmailAddress_base] = EmailAddress_base
+    phone_numbers: Optional[PhoneNumber_base] = PhoneNumber_base
+    web_sites: Optional[WebSite_base] = WebSite_base
 
 @dataclass
 class MatterContacts_Fields:
@@ -1042,18 +1245,18 @@ class MatterContacts_Fields:
     client_connect_user_id: Optional[int] = None
 
     # Nested resource fields
-    avatar: Optional[Avatar_base] = None
-    company: Optional[Contact_base] = None
-    primary_address: Optional[Address_base] = None
-    primary_web_site: Optional[WebSite_base] = None
-    secondary_address: Optional[Address_base] = None
-    secondary_web_site: Optional[WebSite_base] = None
-    addresses: Optional[Address_base] = None
-    custom_field_values: Optional[CustomFieldValue_base] = None
-    email_addresses: Optional[EmailAddress_base] = None
-    phone_numbers: Optional[PhoneNumber_base] = None
-    web_sites: Optional[WebSite_base] = None
-    relationship: Optional[Relationship_base] = None
+    avatar: Optional[Avatar_base] = Avatar_base
+    company: Optional[Contact_base] = Contact_base
+    primary_address: Optional[Address_base] = Address_base
+    primary_web_site: Optional[WebSite_base] = WebSite_base
+    secondary_address: Optional[Address_base] = Address_base
+    secondary_web_site: Optional[WebSite_base] = WebSite_base
+    addresses: Optional[Address_base] = Address_base
+    custom_field_values: Optional[CustomFieldValue_base] = CustomFieldValue_base
+    email_addresses: Optional[EmailAddress_base] = EmailAddress_base
+    phone_numbers: Optional[PhoneNumber_base] = PhoneNumber_base
+    web_sites: Optional[WebSite_base] = WebSite_base
+    relationship: Optional[Relationship_base] = Relationship_base
 
 @dataclass
 class RelatedContacts_Fields:
@@ -1076,18 +1279,18 @@ class RelatedContacts_Fields:
     client_connect_user_id: Optional[int] = None
 
     # Nested resource fields
-    avatar: Optional[Avatar_base] = None
-    company: Optional[Contact_base] = None
-    primary_address: Optional[Address_base] = None
-    primary_web_site: Optional[WebSite_base] = None
-    secondary_address: Optional[Address_base] = None
-    secondary_web_site: Optional[WebSite_base] = None
-    addresses: Optional[Address_base] = None
-    custom_field_values: Optional[CustomFieldValue_base] = None
-    email_addresses: Optional[EmailAddress_base] = None
-    phone_numbers: Optional[PhoneNumber_base] = None
-    web_sites: Optional[WebSite_base] = None
-    relationship: Optional[Relationship_base] = None
+    avatar: Optional[Avatar_base] = Avatar_base
+    company: Optional[Contact_base] = Contact_base
+    primary_address: Optional[Address_base] = Address_base
+    primary_web_site: Optional[WebSite_base] = WebSite_base
+    secondary_address: Optional[Address_base] = Address_base
+    secondary_web_site: Optional[WebSite_base] = WebSite_base
+    addresses: Optional[Address_base] = Address_base
+    custom_field_values: Optional[CustomFieldValue_base] = CustomFieldValue_base
+    email_addresses: Optional[EmailAddress_base] = EmailAddress_base
+    phone_numbers: Optional[PhoneNumber_base] = PhoneNumber_base
+    web_sites: Optional[WebSite_base] = WebSite_base
+    relationship: Optional[Relationship_base] = Relationship_base
 
 @dataclass
 class Note_Fields:
@@ -1103,11 +1306,11 @@ class Note_Fields:
     time_entries_count: Optional[int] = None
 
     # Nested resource fields
-    matter: Optional[Matter_base] = None
-    contact: Optional[Contact_base] = None
-    author: Optional[User_base] = None
-    time_entries: Optional[Activity_base] = None
-    notification_event_subscribers: Optional[NotificationEventSubscriber_base] = None
+    matter: Optional[Matter_base] = Matter_base
+    contact: Optional[Contact_base] = Contact_base
+    author: Optional[User_base] = User_base
+    time_entries: Optional[Activity_base] = Activity_base
+    notification_event_subscribers: Optional[NotificationEventSubscriber_base] = NotificationEventSubscriber_base
 
 @dataclass
 class OutstandingClientBalance_Fields:
@@ -1121,13 +1324,14 @@ class OutstandingClientBalance_Fields:
     pending_payments_total: Optional[float] = None
     reminders_enabled: Optional[bool] = None
     total_outstanding_balance: Optional[float] = None
+    total_outstanding_balance_by_currency: Optional[dict] = None
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    outstanding_bills: Optional[Bill_base] = None
-    contact: Optional[Contact_base] = None
-    currency: Optional[Currency_base] = None
+    outstanding_bills: Optional[Bill_base] = Bill_base
+    contact: Optional[Contact_base] = Contact_base
+    currency: Optional[Currency_base] = Currency_base
 
 @dataclass
 class Payment_Fields:
@@ -1144,11 +1348,11 @@ class Payment_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    contact: Optional[Contact_base] = None
-    user: Optional[User_base] = None
-    source_bank_account: Optional[BankAccount_base] = None
-    destination_bank_account: Optional[BankAccount_base] = None
-    allocations: Optional[Allocation_base] = None
+    contact: Optional[Contact_base] = Contact_base
+    user: Optional[User_base] = User_base
+    source_bank_account: Optional[BankAccount_base] = BankAccount_base
+    destination_bank_account: Optional[BankAccount_base] = BankAccount_base
+    allocations: Optional[Allocation_base] = Allocation_base
 
 @dataclass
 class Damage_Fields:
@@ -1162,7 +1366,7 @@ class Damage_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    matter: Optional[Matter_base] = None
+    matter: Optional[Matter_base] = Matter_base
 
 @dataclass
 class MedicalBill_Fields:
@@ -1180,8 +1384,8 @@ class MedicalBill_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    matter: Optional[Matter_base] = None
-    liens: Optional[Lien_base] = None
+    matter: Optional[Matter_base] = Matter_base
+    liens: Optional[Lien_base] = Lien_base
 
 @dataclass
 class MedicalRecord_Fields:
@@ -1195,7 +1399,7 @@ class MedicalRecord_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    matter: Optional[Matter_base] = None
+    matter: Optional[Matter_base] = Matter_base
 
 @dataclass
 class MedicalRecordsRequest_Fields:
@@ -1216,10 +1420,10 @@ class MedicalRecordsRequest_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    matter: Optional[Matter_base] = None
-    medical_provider: Optional[Contact_base] = None
-    medical_bills: Optional[MedicalBill_base] = None
-    medical_records: Optional[MedicalRecord_base] = None
+    matter: Optional[Matter_base] = Matter_base
+    medical_provider: Optional[Contact_base] = Contact_base
+    medical_bills: Optional[MedicalBill_base] = MedicalBill_base
+    medical_records: Optional[MedicalRecord_base] = MedicalRecord_base
 
 @dataclass
 class PhoneNumber_Fields:
@@ -1253,8 +1457,8 @@ class Relationship_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    matter: Optional[Matter_base] = None
-    contact: Optional[Contact_base] = None
+    matter: Optional[Matter_base] = Matter_base
+    contact: Optional[Contact_base] = Contact_base
 
 @dataclass
 class Reminder_Fields:
@@ -1268,8 +1472,8 @@ class Reminder_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    notification_method: Optional[NotificationMethod_base] = None
-    subject: Optional[PolymorphicObject_base] = None
+    notification_method: Optional[NotificationMethod_base] = NotificationMethod_base
+    subject: Optional[PolymorphicObject_base] = PolymorphicObject_base
 
 @dataclass
 class ReportPreset_Fields:
@@ -1286,7 +1490,7 @@ class ReportPreset_Fields:
     options: Optional[str] = None
 
     # Nested resource fields
-    report_schedule: Optional[ReportSchedule_base] = None
+    report_schedule: Optional[ReportSchedule_base] = ReportSchedule_base
 
 @dataclass
 class ReportSchedule_Fields:
@@ -1369,6 +1573,33 @@ class CalendarVisibility_Fields:
     updated_at: Optional[str] = None
 
 @dataclass
+class Task_Fields:
+    # Fields directly copied from Task_base
+    id: Optional[int] = None
+    etag: Optional[str] = None
+    name: Optional[str] = None
+    status: Optional[str] = None
+    description: Optional[str] = None
+    priority: Optional[str] = None
+    due_at: Optional[str] = None
+    permission: Optional[str] = None
+    completed_at: Optional[str] = None
+    notify_completion: Optional[bool] = None
+    statute_of_limitations: Optional[bool] = None
+    time_estimated: Optional[int] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    time_entries_count: Optional[int] = None
+
+    # Nested resource fields
+    time_entries: Optional[Activity_base] = Activity_base
+    task_type: Optional[TaskType_base] = TaskType_base
+    assigner: Optional[User_base] = User_base
+    matter: Optional[Matter_base] = Matter_base
+    assignee: Optional[Participant_base] = Participant_base
+    reminders: Optional[Reminder_base] = Reminder_base
+
+@dataclass
 class TaskTemplateList_Fields:
     # Fields directly copied from TaskTemplateList_base
     created_at: Optional[str] = None
@@ -1380,8 +1611,8 @@ class TaskTemplateList_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    practice_area: Optional[PracticeArea_base] = None
-    creator: Optional[User_base] = None
+    practice_area: Optional[PracticeArea_base] = PracticeArea_base
+    creator: Optional[User_base] = User_base
 
 @dataclass
 class TaskTemplate_Fields:
@@ -1396,12 +1627,12 @@ class TaskTemplate_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    cascading_source: Optional[CascadingTaskTemplate_base] = None
-    assignee: Optional[User_base] = None
-    task_template_list: Optional[TaskTemplateList_base] = None
-    task_type: Optional[TaskType_base] = None
-    template_creator: Optional[User_base] = None
-    reminder_templates: Optional[ReminderTemplate_base] = None
+    cascading_source: Optional[CascadingTaskTemplate_base] = CascadingTaskTemplate_base
+    assignee: Optional[User_base] = User_base
+    task_template_list: Optional[TaskTemplateList_base] = TaskTemplateList_base
+    task_type: Optional[TaskType_base] = TaskType_base
+    template_creator: Optional[User_base] = User_base
+    reminder_templates: Optional[ReminderTemplate_base] = ReminderTemplate_base
 
 @dataclass
 class TaskType_Fields:
@@ -1424,7 +1655,7 @@ class Timer_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    activity: Optional[Activity_base] = None
+    activity: Optional[Activity_base] = Activity_base
 
 @dataclass
 class TrustLineItem_Fields:
@@ -1438,9 +1669,9 @@ class TrustLineItem_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    bill: Optional[Bill_base] = None
-    matter: Optional[Matter_base] = None
-    client: Optional[Contact_base] = None
+    bill: Optional[Bill_base] = Bill_base
+    matter: Optional[Matter_base] = Matter_base
+    client: Optional[Contact_base] = Contact_base
 
 @dataclass
 class TrustRequest_Fields:
@@ -1474,13 +1705,13 @@ class User_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    default_activity_description: Optional[ActivityDescription_base] = None
-    notification_methods: Optional[NotificationMethod_base] = None
-    account: Optional[Account_base] = None
-    avatar: Optional[Avatar_base] = None
-    contact: Optional[Contact_base] = None
-    job_title: Optional[JobTitle_base] = None
-    groups: Optional[Group_base] = None
+    default_activity_description: Optional[ActivityDescription_base] = ActivityDescription_base
+    notification_methods: Optional[NotificationMethod_base] = NotificationMethod_base
+    account: Optional[Account_base] = Account_base
+    avatar: Optional[Avatar_base] = Avatar_base
+    contact: Optional[Contact_base] = Contact_base
+    job_title: Optional[JobTitle_base] = JobTitle_base
+    groups: Optional[Group_base] = Group_base
 
 @dataclass
 class UtbmsCode_Fields:
@@ -1521,7 +1752,7 @@ class Webhook_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    user: Optional[User_base] = None
+    user: Optional[User_base] = User_base
 
 @dataclass
 class Multipart_Fields:
@@ -1530,7 +1761,7 @@ class Multipart_Fields:
     put_url: Optional[str] = None
 
     # Nested resource fields
-    put_headers: Optional[MultipartHeader_base] = None
+    put_headers: Optional[MultipartHeader_base] = MultipartHeader_base
 
 @dataclass
 class BillRecipient_Fields:
@@ -1542,7 +1773,7 @@ class BillRecipient_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    recipient: Optional[BillRecipient_Contact_base] = None
+    recipient: Optional[BillRecipient_Contact_base] = BillRecipient_Contact_base
 
 @dataclass
 class ConversationMembership_Fields:
@@ -1555,7 +1786,28 @@ class ConversationMembership_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    member: Optional[UnredactedParticipant_base] = None
+    member: Optional[UnredactedParticipant_base] = UnredactedParticipant_base
+
+@dataclass
+class CustomFieldValue_Fields:
+    # Fields directly copied from CustomFieldValue_base
+    id: Optional[str] = None
+    etag: Optional[str] = None
+    field_name: Optional[str] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    field_type: Optional[str] = None
+    field_required: Optional[bool] = None
+    field_displayed: Optional[bool] = None
+    field_display_order: Optional[int] = None
+    value: Optional[str] = None
+    soft_deleted: Optional[bool] = None
+
+    # Nested resource fields
+    custom_field: Optional[CustomField_base] = CustomField_base
+    picklist_option: Optional[PicklistOption_base] = PicklistOption_base
+    matter: Optional[CustomFieldMatterSelection_base] = CustomFieldMatterSelection_base
+    contact: Optional[Contact_base] = Contact_base
 
 @dataclass
 class MatterBillRecipient_Fields:
@@ -1566,7 +1818,16 @@ class MatterBillRecipient_Fields:
     updated_at: Optional[str] = None
 
     # Nested resource fields
-    recipient: Optional[Contact_base] = None
+    recipient: Optional[Contact_base] = Contact_base
+
+@dataclass
+class MatterCustomRate_Fields:
+    # Fields directly copied from MatterCustomRate_base
+    type: Optional[str] = None
+    on_invoice: Optional[bool] = None
+
+    # Nested resource fields
+    rates: Optional[PolymorphicCustomRate_base] = PolymorphicCustomRate_base
 
 @dataclass
 class Participant_Fields:
@@ -1584,7 +1845,7 @@ class Participant_Fields:
     job_title_name: Optional[str] = None
 
     # Nested resource fields
-    avatar: Optional[Avatar_base] = None
+    avatar: Optional[Avatar_base] = Avatar_base
 
 @dataclass
 class CustomFieldMatterSelection_Fields:
@@ -1615,265 +1876,7 @@ class PolymorphicCustomRate_Fields:
     date: Optional[str] = None
 
     # Nested resource fields
-    user: Optional[PolymorphicCustomRate_User_base] = None
-    group: Optional[PolymorphicCustomRate_Group_base] = None
-    activity_description: Optional[PolymorphicCustomRate_ActivityDescription_base] = None
-
-@dataclass
-class DocumentVersion_Fields:
-    # Fields directly copied from DocumentVersion_base
-    id: Optional[int] = None
-    document_id: Optional[int] = None
-    etag: Optional[str] = None
-    uuid: Optional[str] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    filename: Optional[str] = None
-    size: Optional[int] = None
-    version_number: Optional[int] = None
-    content_type: Optional[str] = None
-    received_at: Optional[str] = None
-    put_url: Optional[str] = None
-    fully_uploaded: Optional[bool] = None
-
-    # Nested resource fields
-    creator: Optional[ClioCreator_base] = None
-    put_headers: Optional[MultipartHeader_base] = None
-    multiparts: Optional[Multipart_Fields] = None
-
-@dataclass
-class Communication_Fields:
-    # Fields directly copied from Communication_base
-    id: Optional[int] = None
-    etag: Optional[str] = None
-    subject: Optional[str] = None
-    body: Optional[str] = None
-    type: Optional[str] = None
-    date: Optional[str] = None
-    time_entries_count: Optional[int] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    received_at: Optional[str] = None
-
-    # Nested resource fields
-    user: Optional[User_base] = None
-    matter: Optional[Matter_base] = None
-    communication_eml_file: Optional[CommunicationEmlFile_base] = None
-    senders: Optional[Participant_Fields] = None
-    receivers: Optional[Participant_Fields] = None
-    external_properties: Optional[ExternalProperty_base] = None
-    time_entries: Optional[Activity_base] = None
-    documents: Optional[Document_base] = None
-    notification_event_subscribers: Optional[NotificationEventSubscriber_base] = None
-
-@dataclass
-class Conversation_Fields:
-    # Fields directly copied from Conversation_base
-    id: Optional[int] = None
-    etag: Optional[str] = None
-    archived: Optional[bool] = None
-    read_only: Optional[bool] = None
-    current_user_is_member: Optional[bool] = None
-    subject: Optional[str] = None
-    message_count: Optional[int] = None
-    time_entries_count: Optional[int] = None
-    read: Optional[bool] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-
-    # Nested resource fields
-    last_message: Optional[ConversationMessage_base] = None
-    first_message: Optional[ConversationMessage_base] = None
-    matter: Optional[Matter_base] = None
-    messages: Optional[ConversationMessage_base] = None
-    documents: Optional[Document_base] = None
-    memberships: Optional[ConversationMembership_Fields] = None
-
-@dataclass
-class Task_Fields:
-    # Fields directly copied from Task_base
-    id: Optional[int] = None
-    etag: Optional[str] = None
-    name: Optional[str] = None
-    status: Optional[str] = None
-    description: Optional[str] = None
-    priority: Optional[str] = None
-    due_at: Optional[str] = None
-    permission: Optional[str] = None
-    completed_at: Optional[str] = None
-    notify_completion: Optional[bool] = None
-    statute_of_limitations: Optional[bool] = None
-    time_estimated: Optional[int] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    time_entries_count: Optional[int] = None
-
-    # Nested resource fields
-    time_entries: Optional[Activity_base] = None
-    task_type: Optional[TaskType_base] = None
-    assigner: Optional[User_base] = None
-    matter: Optional[Matter_base] = None
-    assignee: Optional[Participant_Fields] = None
-    reminders: Optional[Reminder_base] = None
-
-@dataclass
-class CustomFieldValue_Fields:
-    # Fields directly copied from CustomFieldValue_base
-    id: Optional[str] = None
-    etag: Optional[str] = None
-    field_name: Optional[str] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    field_type: Optional[str] = None
-    field_required: Optional[bool] = None
-    field_displayed: Optional[bool] = None
-    field_display_order: Optional[int] = None
-    value: Optional[str] = None
-    soft_deleted: Optional[bool] = None
-
-    # Nested resource fields
-    custom_field: Optional[CustomField_Fields] = None
-    picklist_option: Optional[PicklistOption_Fields] = None
-    matter: Optional[CustomFieldMatterSelection_base] = None
-    contact: Optional[Contact_base] = None
-
-@dataclass
-class MatterCustomRate_Fields:
-    # Fields directly copied from MatterCustomRate_base
-    type: Optional[str] = None
-    on_invoice: Optional[bool] = None
-
-    # Nested resource fields
-    rates: Optional[PolymorphicCustomRate_Fields] = None
-
-@dataclass
-class Document_Fields:
-    # Fields directly copied from Document_base
-    id: Optional[int] = None
-    etag: Optional[str] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    deleted_at: Optional[str] = None
-    type: Optional[str] = None
-    locked: Optional[bool] = None
-    name: Optional[str] = None
-    received_at: Optional[str] = None
-    filename: Optional[str] = None
-    size: Optional[int] = None
-    content_type: Optional[str] = None
-
-    # Nested resource fields
-    parent: Optional[LinkedFolder_base] = None
-    matter: Optional[Matter_base] = None
-    contact: Optional[Contact_base] = None
-    document_category: Optional[DocumentCategory_base] = None
-    creator: Optional[ClioCreator_base] = None
-    latest_document_version: Optional[DocumentVersion_Fields] = None
-    group: Optional[Group_base] = None
-    external_properties: Optional[ExternalProperty_base] = None
-    document_versions: Optional[DocumentVersion_base] = None
-
-@dataclass
-class Contact_Fields:
-    # Fields directly copied from Contact_base
-    id: Optional[int] = None
-    etag: Optional[str] = None
-    name: Optional[str] = None
-    first_name: Optional[str] = None
-    middle_name: Optional[str] = None
-    last_name: Optional[str] = None
-    date_of_birth: Optional[str] = None
-    type: Optional[str] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    prefix: Optional[str] = None
-    title: Optional[str] = None
-    initials: Optional[str] = None
-    clio_connect_email: Optional[str] = None
-    locked_clio_connect_email: Optional[bool] = None
-    client_connect_user_id: Optional[int] = None
-    primary_email_address: Optional[str] = None
-    secondary_email_address: Optional[str] = None
-    primary_phone_number: Optional[str] = None
-    secondary_phone_number: Optional[str] = None
-    ledes_client_id: Optional[str] = None
-    has_clio_for_clients_permission: Optional[bool] = None
-    is_client: Optional[bool] = None
-    is_clio_for_client_user: Optional[bool] = None
-    is_co_counsel: Optional[bool] = None
-    is_bill_recipient: Optional[bool] = None
-    sales_tax_number: Optional[str] = None
-    currency: Optional[dict] = None
-
-    # Nested resource fields
-    activity_rates: Optional[ActivityRate_base] = None
-    addresses: Optional[Address_base] = None
-    custom_field_values: Optional[CustomFieldValue_Fields] = None
-    custom_field_set_associations: Optional[CustomFieldSetAssociation_base] = None
-    email_addresses: Optional[EmailAddress_base] = None
-    instant_messengers: Optional[InstantMessenger_base] = None
-    phone_numbers: Optional[PhoneNumber_base] = None
-    web_sites: Optional[WebSite_base] = None
-    notification_methods: Optional[NotificationMethod_base] = None
-    account_balances: Optional[AccountBalance_base] = None
-    related_contacts: Optional[Contact_base] = None
-    primary_work_address: Optional[Address_base] = None
-    primary_address: Optional[Address_base] = None
-    secondary_address: Optional[Address_base] = None
-    company: Optional[Contact_base] = None
-    avatar: Optional[Avatar_base] = None
-    payment_profile: Optional[PaymentProfile_base] = None
-    folder: Optional[Folder_base] = None
-    co_counsel_rate: Optional[ActivityRate_base] = None
-    primary_web_site: Optional[WebSite_base] = None
-    legal_aid_uk_contact: Optional[LegalAidUkContact_base] = None
-
-@dataclass
-class Matter_Fields:
-    # Fields directly copied from Matter_base
-    id: Optional[int] = None
-    etag: Optional[str] = None
-    number: Optional[int] = None
-    display_number: Optional[str] = None
-    custom_number: Optional[str] = None
-    currency: Optional[dict] = None
-    description: Optional[str] = None
-    status: Optional[str] = None
-    location: Optional[str] = None
-    client_reference: Optional[str] = None
-    client_id: Optional[int] = None
-    billable: Optional[bool] = None
-    maildrop_address: Optional[str] = None
-    billing_method: Optional[str] = None
-    open_date: Optional[str] = None
-    close_date: Optional[str] = None
-    pending_date: Optional[str] = None
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
-    shared: Optional[bool] = None
-    has_tasks: Optional[bool] = None
-    last_activity_date: Optional[str] = None
-    matter_stage_updated_at: Optional[str] = None
-
-    # Nested resource fields
-    client: Optional[Contact_base] = None
-    contingency_fee: Optional[ContingencyFee_base] = None
-    custom_rate: Optional[MatterCustomRate_Fields] = None
-    evergreen_retainer: Optional[EvergreenRetainer_base] = None
-    folder: Optional[Folder_base] = None
-    group: Optional[Group_base] = None
-    matter_budget: Optional[MatterBudget_base] = None
-    matter_stage: Optional[MatterStage_base] = None
-    originating_attorney: Optional[User_base] = None
-    practice_area: Optional[PracticeArea_base] = None
-    responsible_attorney: Optional[User_base] = None
-    statute_of_limitations: Optional[Task_base] = None
-    user: Optional[User_base] = None
-    legal_aid_uk_matter: Optional[LegalAidUkMatter_base] = None
-    account_balances: Optional[AccountBalance_base] = None
-    custom_field_values: Optional[CustomFieldValue_Fields] = None
-    custom_field_set_associations: Optional[CustomFieldSetAssociation_base] = None
-    matter_bill_recipients: Optional[MatterBillRecipient_Fields] = None
-    relationships: Optional[Relationship_base] = None
-    task_template_list_instances: Optional[TaskTemplateListInstace_base] = None
+    user: Optional[PolymorphicCustomRate_User_base] = PolymorphicCustomRate_User_base
+    group: Optional[PolymorphicCustomRate_Group_base] = PolymorphicCustomRate_Group_base
+    activity_description: Optional[PolymorphicCustomRate_ActivityDescription_base] = PolymorphicCustomRate_ActivityDescription_base
 

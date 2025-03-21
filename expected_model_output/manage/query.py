@@ -298,6 +298,7 @@ class Bill_index_Query:
     X_API_VERSION: Optional[str] = None
     client_id: Optional[int] = None
     created_since: Optional[datetime.datetime] = None
+    currency_id: Optional[int] = None
     custom_field_values: Optional[Literal['=', '<', '>', '<=', '>=']] = None
     due_after: Optional[datetime.date] = None
     due_at: Optional[datetime.date] = None
@@ -1252,13 +1253,14 @@ class Matter_index_Query:
     limit: Optional[int] = None
     notification_event_subscriber_user_id: Optional[int] = None
     open_date__: Optional[Literal['>DATE', '>=DATE', '=DATE', '<=DATE', '<DATE']] = None
-    order: Optional[Literal['display_number(asc)', 'display_number(desc)', 'custom_number(asc)', 'custom_number(desc)', 'id(asc)', 'id(desc)', 'client.name(asc)', 'client.name(desc)', 'open_date(asc)', 'open_date(desc)', 'practice_area.name(asc)', 'practice_area.name(desc)', 'matter_stage.name(asc)', 'matter_stage.name(desc)', 'responsible_attorney.name(asc)', 'responsible_attorney.name(desc)', 'close_date(asc)', 'close_date(desc)', 'pending_date(asc)', 'pending_date(desc)', 'updated_at(asc)', 'updated_at(desc)', 'created_at(asc)', 'created_at(desc)', 'statute_of_limitations.due_at(asc)', 'statute_of_limitations.due_at(desc)', 'originating_attorney.name(asc)', 'originating_attorney.name(desc)', 'grants(asc)', 'grants(desc)', 'matter_stage_updated_at(asc)', 'matter_stage_updated_at(desc)']] = None
+    order: Optional[Literal['display_number(asc)', 'display_number(desc)', 'custom_number(asc)', 'custom_number(desc)', 'id(asc)', 'id(desc)', 'client.name(asc)', 'client.name(desc)', 'open_date(asc)', 'open_date(desc)', 'practice_area.name(asc)', 'practice_area.name(desc)', 'matter_stage.name(asc)', 'matter_stage.name(desc)', 'responsible_attorney.name(asc)', 'responsible_attorney.name(desc)', 'responsible_staff.name(asc)', 'responsible_staff.name(desc)', 'close_date(asc)', 'close_date(desc)', 'pending_date(asc)', 'pending_date(desc)', 'updated_at(asc)', 'updated_at(desc)', 'created_at(asc)', 'created_at(desc)', 'statute_of_limitations.due_at(asc)', 'statute_of_limitations.due_at(desc)', 'originating_attorney.name(asc)', 'originating_attorney.name(desc)', 'grants(asc)', 'grants(desc)', 'matter_stage_updated_at(asc)', 'matter_stage_updated_at(desc)']] = None
     originating_attorney_id: Optional[int] = None
     page_token: Optional[str] = None
     pending_date__: Optional[Literal['>DATE', '>=DATE', '=DATE', '<=DATE', '<DATE']] = None
     practice_area_id: Optional[int] = None
     query: Optional[str] = None
     responsible_attorney_id: Optional[int] = None
+    responsible_staff_id: Optional[int] = None
     status: Optional[Literal['open', 'closed', 'pending']] = None
     subscriber_user_id: Optional[int] = None
     updated_since: Optional[datetime.datetime] = None
@@ -1374,7 +1376,7 @@ class Note_index_Query:
     ids__: Optional[int] = None
     limit: Optional[int] = None
     matter_id: Optional[int] = None
-    order: Optional[Literal['id(asc)', 'id(desc)', 'date(asc)', 'date(desc)', 'subject(asc)', 'subject(desc)', 'detail(asc)', 'detail(desc)', 'author(asc)', 'author(desc)']] = None
+    order: Optional[Literal['id(asc)', 'id(desc)', 'date(asc)', 'date(desc)', 'author(asc)', 'author(desc)', 'updated_at(asc)', 'updated_at(desc)']] = None
     page_token: Optional[str] = None
     query: Optional[str] = None
     updated_since: Optional[datetime.datetime] = None
