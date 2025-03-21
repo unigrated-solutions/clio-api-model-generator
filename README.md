@@ -1,3 +1,8 @@
+## Update 3/21/25: Added models generated for Clio Grow API for testing purposes
+ - **We don't have much experience with how Clio Grow is being used**
+ - **This model generator is structured so that it can be used with any platform with an API following OpenAPI standards**
+ - **Feel free to reach out if you have any questions or have other platforms that you might want to fine tune this generator/api client for!**
+
 # Model Generator Setup Guide
 
 **This document explains the setup process for handling the `models` directory, running generator scripts, and ensuring the correct paths are set dynamically.**
