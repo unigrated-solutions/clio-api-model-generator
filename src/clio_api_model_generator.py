@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import requests
 import shutil
@@ -92,13 +93,22 @@ from generators.endpoints import generate_endpoint_registry
 
 def download_api_specs():
     try:
+        if os.path.exists(SPEC_FILE_PATH):
+            base_backup = SPEC_FILE_PATH + '.backup'
+            backup_path = base_backup
+            count = 1
+            while os.path.exists(backup_path):
+                backup_path = f"{base_backup}{count}"
+                count += 1
+            os.rename(SPEC_FILE_PATH, backup_path)
+            print(f'Existing spec file renamed to {backup_path}')
+        
         response = requests.get(SPEC_FILE_URL)
         if response.status_code == 200:
             with open(SPEC_FILE_PATH, 'wb') as file:
                 file.write(response.content)
             print('File downloaded successfully')
             return True
-        
         else:
             print('Failed to download file')
     except requests.RequestException as e:
@@ -122,8 +132,8 @@ def load_openapi_spec(file_path):
         else:
             raise ValueError(f"Unsupported file format: {file_path.suffix}")
 
-def generate_models():
-    openapi_spec = load_openapi_spec(SPEC_FILE_PATH)
+def generate_models(file_path=SPEC_FILE_PATH):
+    openapi_spec = load_openapi_spec(file_path)
 
     paths = openapi_spec.get("paths", {})
     endpoint_definitions = []
@@ -176,7 +186,20 @@ def generate_models():
 
     print(f'Dataclasses generated in {Path(os.getenv("QUERY_PATH", "models/query.py"))}')
     print(f'Dataclasses generated in {Path(os.getenv("REQUEST_BODY_PATH", "models/request_body.py"))}')
-    
-if __name__ == "__main__":
 
+def update():
+    download_api_specs()
     generate_models()
+    
+def update():
+    download_api_specs()
+    generate_models()
+
+def main():
+    if len(sys.argv) > 1 and sys.argv[1] == "update":
+        update()
+    else:
+        generate_models()
+
+if __name__ == "__main__":
+    main()

@@ -1,7 +1,6 @@
 import json
 import os
 from pathlib import Path
-from collections import defaultdict, deque
 
 FIELDS_PATH = Path(os.getenv("FIELDS_PATH", "models/fields.py"))
 SPEC_FILE_PATH =Path(os.getenv("SPEC_FILE_PATH"))
