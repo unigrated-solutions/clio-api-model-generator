@@ -1,6 +1,6 @@
 [project]
 name = "clio_api_model_generator"
-version = "0.1.0"
+version = "0.1.1"
 description = "A utility to generate Clio API models from OpenAPI specifications for use with our Clio API Python Client."
 authors = [
     { name = "Unigrated Partners", email = "dev@unigratedpartners.com" }
