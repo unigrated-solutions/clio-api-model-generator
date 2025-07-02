@@ -178,3 +178,4 @@ cython_debug/
 models*/
 validate_field_string.py
 all_fields_test.py
+*.backup*

@@ -19,7 +19,7 @@ SPEC_FILE_PATH = 'openapi.json'
 
 STATIC_DIR = os.path.join(script_directory, 'static')
 MODELS_DIR = 'models'
-
+            
 def init_models():
     def find_and_backup_models_folder():
         """Check if 'models' exists in the current directory and handle backup."""
@@ -80,25 +80,7 @@ def init_models():
         print(f'Set environment variables for model paths: {models_path}')
         print(f'Set environment variable SPEC_FILE_PATH: {os.environ["SPEC_FILE_PATH"]}')
 
-
-    def download_api_specs():
-        """Downloads OpenAPI specifications if the file does not already exist."""
-        if not Path(SPEC_FILE_PATH).exists():
-            try:
-                response = requests.get(SPEC_FILE_URL)
-                if response.status_code == 200:
-                    with open(SPEC_FILE_PATH, 'wb') as file:
-                        file.write(response.content)
-                    print('File downloaded successfully')
-                else:
-                    print('Failed to download file')
-            except requests.RequestException as e:
-                print(f'Error downloading file: {e}')
-        else:
-            print("API specs found")
-            
     backup_and_create_models_folder()
-    download_api_specs()
     
 init_models()
 
@@ -108,12 +90,28 @@ from generators.query import generate_query_dataclass
 from generators.request_body import generate_request_body_dataclass
 from generators.endpoints import generate_endpoint_registry  
 
+def download_api_specs():
+    try:
+        response = requests.get(SPEC_FILE_URL)
+        if response.status_code == 200:
+            with open(SPEC_FILE_PATH, 'wb') as file:
+                file.write(response.content)
+            print('File downloaded successfully')
+            return True
+        
+        else:
+            print('Failed to download file')
+    except requests.RequestException as e:
+        print(f'Error downloading file: {e}')
+        
 def load_openapi_spec(file_path):
+    # download_api_specs()
     """Loads an OpenAPI spec file (JSON or YAML) and returns it as a Python dictionary."""
     file_path = Path(file_path)  # Ensure it's a Path object
 
     if not file_path.exists():
-        raise FileNotFoundError(f"File not found: {file_path}")
+        if not download_api_specs():
+            raise FileNotFoundError(f"File not found: {file_path}")
 
     with open(file_path, "r", encoding="utf-8") as file:
         # Determine if it's JSON or YAML based on the file extension
