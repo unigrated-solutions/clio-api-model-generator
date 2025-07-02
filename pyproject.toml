@@ -3,12 +3,12 @@ name = "clio_api_model_generator"
 version = "0.1.0"
 description = "A utility to generate Clio API models from OpenAPI specifications for use with our Clio API Python Client."
 authors = [
-    { name="Unigrated Partners", email="dev@unigratedpartners.com" }
+    { name = "Unigrated Partners", email = "dev@unigratedpartners.com" }
 ]
 readme = "README.md"
 requires-python = ">=3.8"
-license = { text = "Apache-2.0" }
-
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 dependencies = [
     "requests",
     "PyYAML"
@@ -16,11 +16,11 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/unigrated-solutions/clio-api-model-generator"
-API Client = "https://github.com/unigrated-solutions/clio-api-python-client"
-
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+"Clio API Python Client" = "https://github.com/unigrated-solutions/clio-api-python-client"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[build-system]
+requires = ["setuptools>=77.0.0"]
+build-backend = "setuptools.build_meta"
