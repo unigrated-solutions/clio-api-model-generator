@@ -28208,6 +28208,16 @@
             }
           },
           {
+            "name": "currency_id",
+            "in": "query",
+            "description": "Filter Matter records to those of a specific currency.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
             "name": "custom_field_ids[]",
             "in": "query",
             "description": "Filter Matter's custom_field_values to only include values for the given custom field unique identifiers.",
@@ -69939,6 +69949,17 @@
             "type": "string",
             "format": "date-time",
             "description": "The time the *BillingSetting* was last updated (as a ISO-8601 timestamp)"
+          },
+          "multi_currency_billing": {
+            "type": "boolean",
+            "description": "Whether multi-currency billing is enabled"
+          },
+          "billing_currencies": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "The currencies that an account has available for billing, if multi-currency billing is enabled"
           }
         }
       },
