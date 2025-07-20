@@ -41,7 +41,7 @@ def load_and_sort_openapi_spec(file_path, output_path=None):
     
     return openapi_spec
 
-# Usage
-input_file = 'openapi.json'  # Replace with your input OpenAPI spec file path
-output_file = 'openapi_sorted.json'  # Replace with your desired output file path
-sorted_spec = load_and_sort_openapi_spec(input_file, output_file)
+if __name__ == "__main__":
+    input_file = 'openapi.json'  # Replace with your input OpenAPI spec file path
+    output_file = 'openapi_sorted.json'  # Replace with your desired output file path
+    sorted_spec = load_and_sort_openapi_spec(input_file, output_file)

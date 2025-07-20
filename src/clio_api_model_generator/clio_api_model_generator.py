@@ -14,9 +14,6 @@ script_directory = script_path.parent
 SPEC_FILE_URL = 'https://docs.developers.clio.com/openapi.json'
 SPEC_FILE_PATH = 'openapi.json'
 
-# Path to the Clio Grow API spec file- Early Release
-# SPEC_FILE_URL = 'https://docs.developers.clio.com/grow.openapi.yaml'
-# SPEC_FILE_PATH = 'grow.openapi.yaml'
 
 STATIC_DIR = os.path.join(script_directory, 'static')
 MODELS_DIR = 'models'
@@ -71,7 +68,7 @@ def init_models():
             print(f'Static directory "{STATIC_DIR}" not found, no files copied.')
 
         # Set the models directory and spec file path in environment variables
-        os.environ["SPEC_FILE_PATH"] = str(Path(SPEC_FILE_PATH).resolve())  # Add this line
+        os.environ["SPEC_FILE_PATH"] = str(Path(SPEC_FILE_PATH).resolve())
         os.environ["ENDPOINTS_PATH"] = str(models_path / "endpoints.py")
         os.environ["FIELDS_PATH"] = str(models_path / "fields.py")
         os.environ["QUERY_PATH"] = str(models_path / "query.py")
@@ -85,11 +82,12 @@ def init_models():
     
 init_models()
 
-from generators.components import generate_component_dataclasses
-from generators.fields import generate_field_dataclasses
-from generators.query import generate_query_dataclass
-from generators.request_body import generate_request_body_dataclass
-from generators.endpoints import generate_endpoint_registry  
+from .generators.components import generate_component_dataclasses
+from .generators.fields import generate_field_dataclasses
+from .generators.query import generate_query_dataclass
+from .generators.request_body import generate_request_body_dataclass
+from .generators.endpoints import generate_endpoint_registry
+
 
 def download_api_specs():
     try:
@@ -187,10 +185,6 @@ def generate_models(file_path=SPEC_FILE_PATH):
     print(f'Dataclasses generated in {Path(os.getenv("QUERY_PATH", "models/query.py"))}')
     print(f'Dataclasses generated in {Path(os.getenv("REQUEST_BODY_PATH", "models/request_body.py"))}')
 
-def update():
-    download_api_specs()
-    generate_models()
-    
 def update():
     download_api_specs()
     generate_models()
