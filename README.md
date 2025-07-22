@@ -1,4 +1,7 @@
-## Update 3/21/25: Added models generated for Clio Grow API for testing purposes
+## 7/21/25 Update:
+ - **TODO: Update Readme** 
+
+## 3/21/25: Added models generated for Clio Grow API for testing purposes
  - **We don't have much experience with how Clio Grow is being used**
  - **This model generator is structured so that it can be used with any platform with an API following OpenAPI standards**
  - **Feel free to reach out if you have any questions or have other platforms that you might want to fine tune this generator/api client for!**
@@ -20,87 +23,6 @@ The project handles the `models` directory in the following way:
 7. **Generator scripts are imported after paths are set.**
 
 ## Setup Process
-
-### 1. Backup and Creation of `models` Folder
-
-The following logic is used to determine where the `models` directory should be:
-
-```python
-MODELS_DIR = 'models'
-STATIC_DIR = 'static'
-
-def find_and_backup_models_folder():
-    current_dir = Path(os.getcwd())
-    parent_dir = current_dir.parent
-
-    for directory in [parent_dir, current_dir]:
-        models_path = directory / MODELS_DIR
-
-        if models_path.exists():
-            if any(models_path.iterdir()):
-                print(f'Existing non-empty models directory found at: {models_path}')
-                backup_folder = models_path.with_name(f"{MODELS_DIR}.backup")
-                counter = 1
-
-                while backup_folder.exists():
-                    backup_folder = models_path.with_name(f"{MODELS_DIR}.backup{counter}")
-                    counter += 1
-
-                os.rename(models_path, backup_folder)
-                print(f'Renamed "{models_path}" to "{backup_folder}"')
-
-                models_path.mkdir(parents=True, exist_ok=True)
-                print(f'Created new "{models_path}" directory.')
-                return models_path
-
-            else:
-                print(f'Models folder found at "{models_path}" but it is empty.')
-                return models_path
-
-    print(f'No existing "{MODELS_DIR}" directory found in parent or current directory.')
-    return None
-```
-
-### 2. Copying Static Files
-
-Once the `models` folder is created or selected, the files from `static/` are copied:
-
-```python
-def backup_and_create_models_folder():
-    models_path = find_and_backup_models_folder() or Path(MODELS_DIR).resolve()
-
-    if not models_path.exists():
-        models_path.mkdir(parents=True, exist_ok=True)
-        print(f'Created new "{models_path}" directory.')
-
-    if Path(STATIC_DIR).exists():
-        for item in Path(STATIC_DIR).iterdir():
-            if item.is_file():
-                shutil.copy2(item, models_path / item.name)
-        print(f'Copied all files from "{STATIC_DIR}" to "{models_path}".')
-    else:
-        print(f'Static directory "{STATIC_DIR}" not found, no files copied.')
-
-    os.environ["ENDPOINTS_PATH"] = str(models_path / "endpoints.py")
-    os.environ["FIELDS_PATH"] = str(models_path / "fields.py")
-    os.environ["QUERY_PATH"] = str(models_path / "query.py")
-    os.environ["REQUEST_BODY_PATH"] = str(models_path / "request_body.py")
-    os.environ["SCHEMA_PATH"] = str(models_path / "schemas.py")
-
-    print(f'Set environment variables for model paths: {models_path}')
-```
-
-### 3. Generator Scripts
-
-The generator scripts should use the environment variables to reference paths dynamically:
-
-```python
-ENDPOINTS_PATH = Path(os.getenv("ENDPOINTS_PATH", "models/endpoints.py"))
-FIELDS_PATH = Path(os.getenv("FIELDS_PATH", "models/fields.py"))
-QUERY_PATH = Path(os.getenv("QUERY_PATH", "models/query.py"))
-REQUEST_BODY_PATH = Path(os.getenv("REQUEST_BODY_PATH", "models/request_body.py"))
-SCHEMA_PATH = Path(os.getenv("SCHEMA_PATH", "models/schemas.py"))
-```
 
 ## Execution Flow Summary
 
@@ -163,7 +85,7 @@ The generation process is orchestrated by `generate_models.py`, which follows th
    - Ensures the `models` directory is ready.
    - Downloads the OpenAPI spec if not present.
 
-2. **Schema Generation (`schema.py`)**
+2. **Schema Generation (`components.py`)**
    - Generates dataclasses from OpenAPI schemas.
 
 3. **Field Extraction (`fields.py`)**
@@ -182,7 +104,7 @@ The generation process is orchestrated by `generate_models.py`, which follows th
 
 ## Parsing and Extraction Logic
 
-### 1. **Schema Generator (`schema.py`)**
+### 1. **Schema Generator (`components.py`)**
 
 **Purpose:**  
 Processes OpenAPI `components.schemas` to generate Python dataclasses.

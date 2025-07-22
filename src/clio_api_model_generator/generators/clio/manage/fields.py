@@ -1,13 +1,13 @@
 import json
 import os
 from pathlib import Path
+from .config import TEMP_DIR_PATH
 
-FIELDS_PATH = Path(os.getenv("FIELDS_PATH", "models/fields.py"))
-SPEC_FILE_PATH =Path(os.getenv("SPEC_FILE_PATH"))
+FIELDS_PATH = TEMP_DIR_PATH / "fields.py"
 
 HEADER = """from dataclasses import dataclass
 from typing import Optional
-from models.components import *
+from .components import *
 
 """
 pending_dataclasses = {}
@@ -208,11 +208,7 @@ def map_field_type(field_schema: dict) -> str:
 
 def generate_field_dataclasses(api_specs, export_mapping = False):
     global pending_dataclasses
-    # input_file = SPEC_FILE_PATH  # Replace with your OpenAPI spec file path
     FIELDS_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-    # with open(input_file, "r") as f:
-    #     spec = json.load(f)
 
     if "components" not in api_specs or "schemas" not in api_specs["components"]:
         print("No schemas found in the OpenAPI spec.")

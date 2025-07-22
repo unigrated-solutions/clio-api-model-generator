@@ -2,7 +2,8 @@ import os
 import keyword
 from pathlib import Path
 
-QUERY_PATH = Path(os.getenv("QUERY_PATH", "models/query.py"))
+from .config import *
+QUERY_PATH = TEMP_DIR_PATH / "query.py"
 
 HEADER = """from dataclasses import dataclass
 from typing import Optional, List, Literal
@@ -95,4 +96,3 @@ def generate_query_dataclass(class_name: str, parameters: list):
             f.write(f"    {param_name}: Optional[{python_type}] = None\n")
 
         f.write("\n")
-        

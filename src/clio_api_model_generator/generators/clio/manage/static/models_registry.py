@@ -1,5 +1,5 @@
 from typing import Dict, Type, Optional
-from models.endpoints import Endpoints as EndpointDefinitions
+from .endpoints import Endpoints as EndpointDefinitions
 
 class Endpoints:
     """

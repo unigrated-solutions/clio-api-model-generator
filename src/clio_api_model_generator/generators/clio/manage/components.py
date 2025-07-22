@@ -2,8 +2,8 @@ import os
 import json
 from pathlib import Path
 
-COMPONENT_PATH = Path(os.getenv("COMPONENT_PATH", "models/schemas.py"))
-SPEC_FILE_PATH =Path(os.getenv("SPEC_FILE_PATH"))
+from .config import *
+COMPONENT_PATH = TEMP_DIR_PATH / "components.py"
 
 HEADER = """from dataclasses import dataclass
 from typing import Optional, List, Literal, Any

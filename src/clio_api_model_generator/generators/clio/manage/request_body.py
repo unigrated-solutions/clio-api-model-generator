@@ -1,7 +1,8 @@
 import os
 from pathlib import Path
+from .config import *
 
-REQUEST_BODY_PATH = Path(os.getenv("REQUEST_BODY_PATH", "models/request_body.py"))
+REQUEST_BODY_PATH = TEMP_DIR_PATH / "request_body.py"
 
 HEADER = """from dataclasses import dataclass
 from typing import Optional, List, Literal
