@@ -1,6 +1,4 @@
-import os
 import keyword
-from pathlib import Path
 
 from .config import *
 QUERY_PATH = TEMP_DIR_PATH / "query.py"

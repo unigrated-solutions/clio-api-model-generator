@@ -1,5 +1,4 @@
 import json
-import os
 from pathlib import Path
 from .config import TEMP_DIR_PATH
 

@@ -1,13 +1,10 @@
-import os
-import sys
+import inspect
 import json
 import requests
-import shutil
 from pathlib import Path
 import yaml
 
 from .config import *
-print("Generating from:", SPEC_FILE_URL)
 
 from .components import generate_component_dataclasses
 from .fields import generate_field_dataclasses
@@ -15,6 +12,10 @@ from .query import generate_query_dataclass
 from .request_body import generate_request_body_dataclass
 from .endpoints import generate_endpoint_registry
 
+def filter_kwargs(func, kwargs):
+    """Filter kwargs to only those accepted by func."""
+    sig = inspect.signature(func)
+    return {k: v for k, v in kwargs.items() if k in sig.parameters}
 
 def download_api_specs(dest_path=DOWNLOADED_SPEC_PATH) -> Path | None:
     try:
@@ -109,79 +110,19 @@ def generate_models(file_path=None, output_dir=SCRIPT_DIR, **kwargs):
     generate_endpoint_registry(endpoint_definitions)
     export_temp_contents(target_path=output_dir, **kwargs)
     
-def update():
-    download_api_specs()
-    generate_models()
+def update(**kwargs):
+    # Filter kwargs for download_api_specs
+    download_kwargs = filter_kwargs(download_api_specs, kwargs)
+    dest_path = download_kwargs.get('dest_path', None)
 
-# def init_models():
-#     def find_and_backup_models_folder():
-#         """Check if 'models' exists in the current directory and handle backup."""
-#         models_path = Path(MODELS_DIR).resolve()
+    # Call download_api_specs with filtered kwargs
+    file_path = download_api_specs(**download_kwargs)
 
-#         if models_path.exists():
-#             if any(models_path.iterdir()):  # If the directory is not empty
-#                 print(f'Existing non-empty models directory found at: {models_path}')
-#                 backup_folder = models_path.with_name(f"{MODELS_DIR}.backup")
-#                 counter = 1
+    # Prepare kwargs for generate_models
+    generate_kwargs = filter_kwargs(generate_models, kwargs)
 
-#                 # Find a unique backup folder name
-#                 while backup_folder.exists():
-#                     backup_folder = models_path.with_name(f"{MODELS_DIR}.backup{counter}")
-#                     counter += 1
-                
-#                 os.rename(models_path, backup_folder)
-#                 print(f'Renamed "{models_path}" to "{backup_folder}"')
+    # Pass file_path from download_api_specs to generate_models if not provided
+    if 'file_path' not in generate_kwargs or generate_kwargs['file_path'] is None:
+        generate_kwargs['file_path'] = file_path
 
-#                 # Create a new models directory
-#                 models_path.mkdir(parents=True, exist_ok=True)
-#                 print(f'Created new "{models_path}" directory.')
-
-#                 return models_path  # Return the models directory
-#             else:
-#                 print(f'Models folder found at "{models_path}" but it is empty.')
-#                 return models_path  # Return the empty models directory
-
-#         print(f'No existing "{MODELS_DIR}" directory found, creating a new one.')
-#         return None
-
-#     def backup_and_create_models_folder():
-#         """Handles model folder backup and creation."""
-#         models_path = find_and_backup_models_folder() or Path(MODELS_DIR).resolve()
-
-#         if not models_path.exists():
-#             models_path.mkdir(parents=True, exist_ok=True)
-#             print(f'Created new "{models_path}" directory.')
-
-#         # Copy all files from the static directory to the models folder
-#         static_path = Path(LOCAL_STATIC_DIR)
-#         if static_path.exists():
-#             for item in static_path.iterdir():
-#                 if item.is_file():
-#                     shutil.copy2(item, models_path / item.name)
-#             print(f'Copied all files from "{LOCAL_STATIC_DIR}" to "{models_path}".')
-#         else:
-#             print(f'Static directory "{LOCAL_STATIC_DIR}" not found, no files copied.')
-
-#         # Set the models directory and spec file path in environment variables
-#         os.environ["SPEC_FILE_PATH"] = str(Path(SPEC_FILE_PATH).resolve())
-#         os.environ["ENDPOINTS_PATH"] = str(models_path / "endpoints.py")
-#         os.environ["FIELDS_PATH"] = str(models_path / "fields.py")
-#         os.environ["QUERY_PATH"] = str(models_path / "query.py")
-#         os.environ["REQUEST_BODY_PATH"] = str(models_path / "request_body.py")
-#         os.environ["COMPONENT_PATH"] = str(models_path / "components.py")
-
-#         print(f'Set environment variables for model paths: {models_path}')
-#         print(f'Set environment variable SPEC_FILE_PATH: {os.environ["SPEC_FILE_PATH"]}')
-
-#     backup_and_create_models_folder()
-    
-# init_models()
-
-# def main():
-#     if len(sys.argv) > 1 and sys.argv[1] == "update":
-#         update()
-#     else:
-#         generate_models()
-
-# if __name__ == "__main__":
-#     main()
+    generate_models(**generate_kwargs)

@@ -1,7 +1,3 @@
-import os
-import json
-from pathlib import Path
-
 from .config import *
 COMPONENT_PATH = TEMP_DIR_PATH / "components.py"
 

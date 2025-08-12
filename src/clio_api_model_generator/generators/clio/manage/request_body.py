@@ -1,5 +1,3 @@
-import os
-from pathlib import Path
 from .config import *
 
 REQUEST_BODY_PATH = TEMP_DIR_PATH / "request_body.py"

@@ -1,12 +1,24 @@
-## 7/21/25 Update:
- - **TODO: Update Readme** 
 
-## 3/21/25: Added models generated for Clio Grow API for testing purposes
- - **We don't have much experience with how Clio Grow is being used**
- - **This model generator is structured so that it can be used with any platform with an API following OpenAPI standards**
- - **Feel free to reach out if you have any questions or have other platforms that you might want to fine tune this generator/api client for!**
+## Usage
 
-# Model Generator Setup Guide
+### Installation
+```bash
+pip install clio-api-model-generator
+```
+### Generating Models
+To execute the generator and produce dataclass models, run:
+
+```python
+from clio_api_model_generator import clio_manage as manage_model_generator
+
+manage_model_generator.generate_models(output_dir=models_dir, overwrite=False)
+```
+
+This script will initialize the models directory, download the OpenAPI spec, and generate all necessary dataclasses.
+
+---
+
+# Model Generator Generation Flow
 
 **This document explains the setup process for handling the `models` directory, running generator scripts, and ensuring the correct paths are set dynamically.**
 
@@ -333,18 +345,6 @@ class Endpoints:
         }
     }
 ```
-
----
-
-## Running the Generator
-
-To execute the generator and produce dataclasses, run:
-
-```bash
-python generate_models.py
-```
-
-This script will initialize the models directory, download the OpenAPI spec, and generate all necessary dataclasses.
 
 ---
 
