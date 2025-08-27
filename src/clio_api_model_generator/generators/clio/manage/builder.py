@@ -10,7 +10,7 @@ from .components import generate_component_dataclasses
 from .fields import generate_field_dataclasses
 from .query import generate_query_dataclass
 from .request_body import generate_request_body_dataclass
-from .endpoints import generate_endpoint_registry
+from .endpoints import generate_endpoint_registry, generate_method_hints
 
 def filter_kwargs(func, kwargs):
     """Filter kwargs to only those accepted by func."""
@@ -74,6 +74,8 @@ def generate_models(file_path=None, output_dir=SCRIPT_DIR, **kwargs):
             # Generate query dataclass
             parameters = details.get("parameters", [])
             responses = details.get("responses", {})
+            summary = details.get("summary")
+            description = details.get("description")
             
             field_model = None
             field = responses.get("200",{}).get("content",{}).get("application/json; charset=utf-8",{}).get("schema",{}).get("$ref")
@@ -95,6 +97,7 @@ def generate_models(file_path=None, output_dir=SCRIPT_DIR, **kwargs):
                 "query_model": query_model_name if parameters else None,
                 "request_body_model": None,
                 "field_model": field_model
+                
             }
 
             # Generate request body dataclass if present
@@ -103,11 +106,17 @@ def generate_models(file_path=None, output_dir=SCRIPT_DIR, **kwargs):
                 generate_request_body_dataclass(request_body_model_name, details["requestBody"])
                 endpoint["request_body_model"] = request_body_model_name
 
+            if summary is not None:
+                endpoint["summary"] = summary
+            if description is not None:
+                endpoint["description"] = description
+                
             # Append to endpoint definitions
             endpoint_definitions.append(endpoint)
 
     # Generate endpoints dynamically in the registry
     generate_endpoint_registry(endpoint_definitions)
+    generate_method_hints(endpoint_definitions)
     export_temp_contents(target_path=output_dir, **kwargs)
     
 def update(**kwargs):
